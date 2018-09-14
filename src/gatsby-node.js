@@ -2,23 +2,25 @@ const axios = require(`axios`)
 const cheerio = require(`cheerio`)
 const crypto = require(`crypto`)
 
-function getInstagramPosts(username) {
-  return new Promise((resolve) => {
-    axios.get(`https://www.instagram.com/${username}/`)
-      .then((response) => {
-      // handle success
-        const $ = cheerio.load(response.data)
-        const jsonData = $(`html > body > script`).get(0).children[0].data.replace(`window._sharedData =`, ``).replace(`;`, ``)
-        const json = JSON.parse(jsonData).entry_data.ProfilePage[0].graphql
-        const photos = []
-        json.user.edge_owner_to_timeline_media.edges.forEach((edge) => {
-          if (edge.node) {
-            photos.push(edge.node)
-          }
-        })
-        resolve(photos)
+async function getInstagramPosts(username) {
+  return axios.get(`https://www.instagram.com/${username}/`)
+    .then((response) => {
+    // handle success
+      const $ = cheerio.load(response.data)
+      const jsonData = $(`html > body > script`).get(0).children[0].data.replace(`window._sharedData =`, ``).replace(`;`, ``)
+      const json = JSON.parse(jsonData).entry_data.ProfilePage[0].graphql
+      const photos = []
+      json.user.edge_owner_to_timeline_media.edges.forEach((edge) => {
+        if (edge.node) {
+          photos.push(edge.node)
+        }
       })
-  })
+      return photos
+    })
+    .catch((err) => {
+      console.warn(`\nCould not fetch instagram posts. Error status ${err.response.status}`)
+      return null
+    })
 }
 
 function processDatum(datum) {
@@ -45,6 +47,9 @@ exports.sourceNodes = async ({ actions }, { username }) => {
   const { createNode } = actions
 
   const data = await getInstagramPosts(username)
+
   // Process data into nodes.
-  data.forEach(datum => createNode(processDatum(datum)))
+  if (data) {
+    data.forEach(datum => createNode(processDatum(datum)))
+  }
 }
