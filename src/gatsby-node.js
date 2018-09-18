@@ -31,6 +31,9 @@ function processDatum(datum) {
     children: [],
     likes: datum.edge_liked_by,
     thumbnails: datum.thumbnail_resources,
+    original: datum.display_url,
+    timestamp: datum.taken_at_timestamp,
+    dimensions: datum.dimensions
   }
 
   // Get content digest of node. (Required field)
@@ -42,6 +45,8 @@ function processDatum(datum) {
   node.internal.contentDigest = contentDigest
   return node
 }
+
+exports.setFieldsOnGraphQLNodeType = require(`./extend-node-type`).extendNodeType
 
 exports.sourceNodes = async ({ actions }, { username }) => {
   const { createNode } = actions
