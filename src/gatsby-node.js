@@ -1,6 +1,7 @@
 const axios = require(`axios`)
 const cheerio = require(`cheerio`)
 const crypto = require(`crypto`)
+const normalize = require(`./normalize`)
 
 async function getInstagramPosts(username) {
   return axios.get(`https://www.instagram.com/${username}/`)
@@ -46,15 +47,23 @@ function processDatum(datum) {
   return node
 }
 
-exports.setFieldsOnGraphQLNodeType = require(`./extend-node-type`).extendNodeType
-
-exports.sourceNodes = async ({ actions }, { username }) => {
-  const { createNode } = actions
+exports.sourceNodes = async ({ actions, store, cache, createNodeId }, { username }) => {
+  const { createNode, touchNode } = actions
 
   const data = await getInstagramPosts(username)
 
   // Process data into nodes.
   if (data) {
-    data.forEach(datum => createNode(processDatum(datum)))
+    data.forEach(async datum => {
+      const res = await normalize.downloadMediaFile({
+        datum: processDatum(datum),
+        store,
+        cache,
+        createNode,
+        createNodeId,
+        touchNode
+      })
+      createNode(res)
+    })
   }
 }

@@ -1,7 +1,8 @@
 # gatsby-source-instagram
 
 Source plugin for scraping data from instagram public profiles and creating
-nodes providing their id, all thumbnails available and their likes count.
+nodes providing their id, all thumbnails available, original image, their likes count,
+and a localFile to use the sharp plugin.
 Since it uses the public website without any api keys, the plugin can only get
 last 12 photos posted.
 
@@ -47,11 +48,12 @@ query {
           height
           width
         }
-        fixed {
-          src
-          srcSet
-          width
-          height
+        localFile {
+          childImageSharp {
+            fixed(width: 150, height:150) {
+              ...GatsbyImageSharpFixed
+            }
+          }
         }
       }
     }
@@ -59,18 +61,8 @@ query {
 }
 ```
 
-## Lazy loading
+## Image processing
 
-This plugin handles creating src and srcSets to co-work with gastby-image and provide lazy loading.
-For the moment only fixed sizes are available and those are not generated but calculated
-from the available thumbnails and original image. This avoids recreating the thumbnails
-and conserving the image quality.
+To use image processing you need gatsby-transformer-sharp, gatsby-plugin-sharp and their dependencies gatsby-image and gatsby-source-filesystem in your gatsby-config.js.
 
-**fixed** can take 1 parameter its width. It defaults to the original image
-
-* The height is calculated automatically based on the selected width.
-
-## Ideas
-
-* Get the original image and save it locally while generating multiple fixed and fluid sizes for better integration with gatsby-image
-* Cache images locally to avoid querying instagram for the images when user visiting website
+You can apply image processing on each instagram node. To access image processing in your queries you need to use the localFile on the **InstaNode** as shown above:
