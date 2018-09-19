@@ -13,9 +13,10 @@ exports.downloadMediaFile = async ({
     const mediaDataCacheKey = `instagram-media-${datum.id}`
     const cacheMediaData = await cache.get(mediaDataCacheKey)
 
-    // If we have cached media data and it wasn't modified, reuse
+    // If we have cached media data reuse
     // previously created file node to not try to redownload
-    if (cacheMediaData && datum.modified === cacheMediaData.modified) {
+    if (cacheMediaData) {
+      console.log("using caaaache")
       fileNodeID = cacheMediaData.fileNodeID
       touchNode({ nodeId: cacheMediaData.fileNodeID })
     }
@@ -36,7 +37,6 @@ exports.downloadMediaFile = async ({
 
           await cache.set(mediaDataCacheKey, {
             fileNodeID,
-            modified: datum.modified,
           })
         }
       } catch (e) {
