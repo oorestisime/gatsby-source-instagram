@@ -1,4 +1,4 @@
-# gatsby-source-instagram
+# gatsby-source-instagram [![npm version](https://badge.fury.io/js/gatsby-source-instagram.svg)](https://badge.fury.io/js/gatsby-source-instagram)
 
 Source plugin for scraping data from instagram public profiles and creating
 nodes providing their id, all thumbnails available, original image, their likes count,
