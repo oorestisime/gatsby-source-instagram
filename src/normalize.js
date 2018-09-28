@@ -16,7 +16,6 @@ exports.downloadMediaFile = async ({
     // If we have cached media data reuse
     // previously created file node to not try to redownload
     if (cacheMediaData) {
-      console.log("using caaaache")
       fileNodeID = cacheMediaData.fileNodeID
       touchNode({ nodeId: cacheMediaData.fileNodeID })
     }
