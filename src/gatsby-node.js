@@ -57,7 +57,7 @@ exports.sourceNodes = async ({ actions, store, cache, createNodeId }, { username
 
   // Process data into nodes.
   if (data) {
-    data.forEach(async datum => {
+    for (const datum of data) {
       const res = await normalize.downloadMediaFile({
         datum: processDatum(datum),
         store,
@@ -67,6 +67,6 @@ exports.sourceNodes = async ({ actions, store, cache, createNodeId }, { username
         touchNode
       })
       createNode(res)
-    })
+    }
   }
 }
