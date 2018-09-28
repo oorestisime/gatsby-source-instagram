@@ -22,7 +22,7 @@ async function getInstagramPosts(username) {
       return photos
     })
     .catch((err) => {
-      console.warn(`\nCould not fetch instagram posts. Error status ${err.response.status}`)
+      console.warn(`\nCould not fetch instagram posts. Error status ${err}`)
       return null
     })
 }
