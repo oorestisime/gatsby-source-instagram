@@ -8,7 +8,10 @@ async function getInstagramPosts(username) {
     .then((response) => {
     // handle success
       const $ = cheerio.load(response.data)
-      const jsonData = $(`html > body > script`).get(0).children[0].data.replace(`window._sharedData =`, ``).replace(`;`, ``)
+      const jsonData = $(`html > body > script`)
+        .get(0).children[0].data
+        .replace(/window\._sharedData\s?=\s?{/, `{`)
+        .replace(/;$/g, ``)
       const json = JSON.parse(jsonData).entry_data.ProfilePage[0].graphql
       const photos = []
       json.user.edge_owner_to_timeline_media.edges.forEach((edge) => {
