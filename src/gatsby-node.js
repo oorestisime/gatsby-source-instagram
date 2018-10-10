@@ -1,9 +1,10 @@
+const _ = require(`lodash`)
 const axios = require(`axios`)
 const cheerio = require(`cheerio`)
 const crypto = require(`crypto`)
 const normalize = require(`./normalize`)
 
-async function getInstagramPosts(username) {
+async function getPublicInstagramPosts({ username }) {
   return axios.get(`https://www.instagram.com/${username}/`)
     .then((response) => {
     // handle success
@@ -27,17 +28,40 @@ async function getInstagramPosts(username) {
     })
 }
 
+async function getInstagramPosts({ access_token, instagram_id, username }) {
+  return axios.get(`https://graph.facebook.com/v3.1/${instagram_id}/media?fields=media_url,media_type,like_count,shortcode,timestamp,comments_count&limit=100&access_token=${access_token}`)
+    .then(async (response) => {
+      let results = [];
+      results.push(...response.data.data)
+      while(response.data.paging.next) {
+        response = await axios(response.data.paging.next)
+        results.push(...response.data.data)
+      }
+      return results
+    })
+    .catch(async (err) => {
+      console.warn(`\nCould not get instagram posts using the Graph API. Error status ${err}`)
+      console.warn(`Falling back to public api... with ${username}`)
+      if (username) {
+        const photos = await getPublicInstagramPosts({ username })
+        return photos
+      }
+      return null
+    })
+}
+
 function processDatum(datum) {
   const node = {
     id: datum.shortcode,
     parent: `__SOURCE__`,
     internal: { type: `InstaNode` },
     children: [],
-    likes: datum.edge_liked_by,
+    likes: _.get(datum, 'edge_liked_by.count') || datum.like_count,
     thumbnails: datum.thumbnail_resources,
-    original: datum.display_url,
-    timestamp: datum.taken_at_timestamp,
-    dimensions: datum.dimensions
+    original: datum.display_url || datum.media_url,
+    timestamp: datum.taken_at_timestamp || new Date(datum.timestamp).getTime() / 1000,
+    dimensions: datum.dimensions,
+    comments: _.get(datum, 'edge_media_to_comment.count') || datum.comments_count,
   }
 
   // Get content digest of node. (Required field)
@@ -50,10 +74,15 @@ function processDatum(datum) {
   return node
 }
 
-exports.sourceNodes = async ({ actions, store, cache, createNodeId }, { username }) => {
+exports.sourceNodes = async ({ actions, store, cache, createNodeId }, options) => {
   const { createNode, touchNode } = actions
 
-  const data = await getInstagramPosts(username)
+  let data;
+  if (options.access_token && options.instagram_id) {
+    data = await getInstagramPosts(options)
+  } else {
+    data = await getPublicInstagramPosts(options)
+  }
 
   // Process data into nodes.
   if (data) {
