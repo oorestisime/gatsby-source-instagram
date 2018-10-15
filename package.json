@@ -1,7 +1,7 @@
 {
   "name": "gatsby-source-instagram",
   "description": "Gatsby source plugin for fetching instagram posts",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "author": "Orestis Ioannou <oorestisime@gmail.com>",
   "main": "index.js",
   "bugs": {
@@ -12,7 +12,7 @@
     "@babel/runtime": "^7.0.0",
     "axios": "^0.18.0",
     "cheerio": "^1.0.0-rc.2",
-    "gatsby-source-filesystem": "^2.0.1"
+    "gatsby-source-filesystem": "^2.0.4"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0",
