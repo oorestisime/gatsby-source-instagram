@@ -130,7 +130,7 @@ https://stackoverflow.com/a/43570120/8185208
 
 # Changelog
 
-## v0.2.1
+## v0.2.2
 
 ### Added
 
