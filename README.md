@@ -54,6 +54,7 @@ Common fields include:
 * original
 * timestamp
 * comments
+* caption
 
 The public scraping method can additionaly retrieve:
 
@@ -70,6 +71,7 @@ query {
         comments
         original
         timestamp
+        caption
         localFile {
           childImageSharp {
             fixed(width: 150, height:150) {
@@ -99,7 +101,6 @@ To use image processing you need gatsby-transformer-sharp, gatsby-plugin-sharp a
 
 You can apply image processing on each instagram node. To access image processing in your queries you need to use the localFile on the **InstaNode** as shown above:
 
-
 ## Instagram Graph API token
 
 To generate access token follow this guide https://developers.facebook.com/docs/instagram-api/getting-started
@@ -110,28 +111,37 @@ You can use this tool to get your instagram account id https://developers.facebo
 
 https://stackoverflow.com/a/43570120/8185208
 
-#### Graph API Explorer:
+#### Graph API Explorer
 
-  * Select your App from the top right dropdown menu
-  * Select "Get User Access Token" from dropdown (right of access token field) and select needed permissions
-  * Copy user access token
+* Select your App from the top right dropdown menu
+* Select "Get User Access Token" from dropdown (right of access token field) and select needed permissions
+* Copy user access token
 
-#### Access Token Debugger:
+#### Access Token Debugger
 
-  * Paste copied token and press "Debug"
-  * Press "Extend Access Token" and copy the generated long-lived user access token
+* Paste copied token and press "Debug"
+* Press "Extend Access Token" and copy the generated long-lived user access token
 
-#### Graph API Explorer:
+#### Graph API Explorer
 
-  * Paste copied token into the "Access Token" field
-  * Make a GET request with "PAGE_ID?fields=access_token"
-  * Find the permanent page access token in the response (node "access_token")
+* Paste copied token into the "Access Token" field
+* Make a GET request with "PAGE_ID?fields=access_token"
+* Find the permanent page access token in the response (node "access_token")
 
 # Changelog
 
-## v0.2.0
+## v0.2.1
+
 ### Added
+
+* Get media caption from the API
+
+## v0.2.0
+
+### Added
+
 * Add ability to query using the Instagram Graph API
 
 ### Breaking changes
+
 * You no longer access likes using `node.likes.count`, but `node.likes`.

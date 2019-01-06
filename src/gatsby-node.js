@@ -29,7 +29,7 @@ async function getPublicInstagramPosts({ username }) {
 }
 
 async function getInstagramPosts({ access_token, instagram_id, username }) {
-  return axios.get(`https://graph.facebook.com/v3.1/${instagram_id}/media?fields=media_url,media_type,like_count,shortcode,timestamp,comments_count&limit=100&access_token=${access_token}`)
+  return axios.get(`https://graph.facebook.com/v3.1/${instagram_id}/media?fields=media_url,caption,media_type,like_count,shortcode,timestamp,comments_count&limit=100&access_token=${access_token}`)
     .then(async (response) => {
       let results = [];
       results.push(...response.data.data)
@@ -57,6 +57,7 @@ function processDatum(datum) {
     internal: { type: `InstaNode` },
     children: [],
     likes: _.get(datum, 'edge_liked_by.count') || datum.like_count,
+    caption: _.get(datum, 'edge_media_to_caption.edges[0].node.text') || datum.caption,
     thumbnails: datum.thumbnail_resources,
     original: datum.display_url || datum.media_url,
     timestamp: datum.taken_at_timestamp || new Date(datum.timestamp).getTime() / 1000,
