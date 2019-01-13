@@ -87,16 +87,18 @@ exports.sourceNodes = async ({ actions, store, cache, createNodeId }, options) =
 
   // Process data into nodes.
   if (data) {
-    for (const datum of data) {
-      const res = await normalize.downloadMediaFile({
-        datum: processDatum(datum),
-        store,
-        cache,
-        createNode,
-        createNodeId,
-        touchNode
+    Promise.all(
+      data.map(async datum => {
+        const res = await normalize.downloadMediaFile({
+          datum: processDatum(datum),
+          store,
+          cache,
+          createNode,
+          createNodeId,
+          touchNode
+        })
+        createNode(res)
       })
-      createNode(res)
-    }
+    )
   }
 }
