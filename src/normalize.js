@@ -1,4 +1,6 @@
-const { createRemoteFileNode } = require(`gatsby-source-filesystem`)
+const {
+  createRemoteFileNode
+} = require(`gatsby-source-filesystem`)
 
 exports.downloadMediaFile = async ({
   datum,
@@ -17,7 +19,9 @@ exports.downloadMediaFile = async ({
     // previously created file node to not try to redownload
     if (cacheMediaData) {
       fileNodeID = cacheMediaData.fileNodeID
-      touchNode({ nodeId: cacheMediaData.fileNodeID })
+      touchNode({
+        nodeId: cacheMediaData.fileNodeID
+      })
     }
 
     // If we don't have cached data, download the file

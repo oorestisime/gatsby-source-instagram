@@ -2,8 +2,8 @@
 
 Source plugin for getting data from Instagram. There are two ways to get information from profiles
 
-* scraping the homepage of the Instagram account. It can only get last 12 photos.
-* querying the Instagram Graph Api using a provided access_token
+- scraping the homepage of the Instagram account. It can only get last 12 photos.
+- querying the Instagram Graph Api using a provided access_token
 
 ## Install
 
@@ -34,8 +34,8 @@ plugins: [
     resolve: `gatsby-source-instagram`,
     options: {
       username: `username`,
-      access_token: 'a valid access token',
-      instagram_id: 'your instagram_business_account id',
+      access_token: "a valid access token",
+      instagram_id: "your instagram_business_account id",
     },
   },
 ]
@@ -49,17 +49,17 @@ The plugin tries to provide uniform results regardless of the way you choose to 
 
 Common fields include:
 
-* id
-* likes
-* original
-* timestamp
-* comments
-* caption
+- id
+- likes
+- original
+- timestamp
+- comments
+- caption
 
 The public scraping method can additionaly retrieve:
 
-* thumbnails
-* dimensions
+- thumbnails
+- dimensions
 
 ```graphql
 query {
@@ -74,7 +74,7 @@ query {
         caption
         localFile {
           childImageSharp {
-            fixed(width: 150, height:150) {
+            fixed(width: 150, height: 150) {
               ...GatsbyImageSharpFixed
             }
           }
@@ -113,35 +113,39 @@ https://stackoverflow.com/a/43570120/8185208
 
 #### Graph API Explorer
 
-* Select your App from the top right dropdown menu
-* Select "Get User Access Token" from dropdown (right of access token field) and select needed permissions
-* Copy user access token
+- Select your App from the top right dropdown menu
+- Select "Get User Access Token" from dropdown (right of access token field) and select needed permissions
+- Copy user access token
 
 #### Access Token Debugger
 
-* Paste copied token and press "Debug"
-* Press "Extend Access Token" and copy the generated long-lived user access token
+- Paste copied token and press "Debug"
+- Press "Extend Access Token" and copy the generated long-lived user access token
 
 #### Graph API Explorer
 
-* Paste copied token into the "Access Token" field
-* Make a GET request with "PAGE_ID?fields=access_token"
-* Find the permanent page access token in the response (node "access_token")
+- Paste copied token into the "Access Token" field
+- Make a GET request with "PAGE_ID?fields=access_token"
+- Find the permanent page access token in the response (node "access_token")
 
 # Changelog
+
+## v0.2.3
+
+- Download remote files in parallel
 
 ## v0.2.2
 
 ### Added
 
-* Get media caption from the API
+- Get media caption from the API
 
 ## v0.2.0
 
 ### Added
 
-* Add ability to query using the Instagram Graph API
+- Add ability to query using the Instagram Graph API
 
 ### Breaking changes
 
-* You no longer access likes using `node.likes.count`, but `node.likes`.
+- You no longer access likes using `node.likes.count`, but `node.likes`.
