@@ -130,6 +130,10 @@ https://stackoverflow.com/a/43570120/8185208
 
 # Changelog
 
+## v0.2.4
+
+- Return promise so gatsby awaits on files
+
 ## v0.2.3
 
 - Download remote files in parallel

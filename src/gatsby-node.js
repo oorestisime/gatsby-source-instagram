@@ -105,7 +105,7 @@ exports.sourceNodes = async ({
 
   // Process data into nodes.
   if (data) {
-    Promise.all(
+    return Promise.all(
       data.map(async datum => {
         const res = await normalize.downloadMediaFile({
           datum: processDatum(datum),

@@ -1,7 +1,7 @@
 {
   "name": "gatsby-source-instagram",
   "description": "Gatsby source plugin for fetching instagram posts",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "author": "Orestis Ioannou <oorestisime@gmail.com>",
   "main": "index.js",
   "bugs": {
