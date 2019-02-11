@@ -71,7 +71,7 @@ function processDatum(datum) {
       _.get(datum, "edge_media_to_caption.edges[0].node.text") || datum.caption,
     thumbnails: datum.thumbnail_resources,
     mediaType: datum.__typename || datum.media_type,
-    preview: datum.display_url || datum.thumbnail_url,
+    preview: datum.display_url || datum.thumbnail_url || datum.media_url,
     original: datum.display_url || datum.media_url,
     timestamp:
       datum.taken_at_timestamp || new Date(datum.timestamp).getTime() / 1000,
