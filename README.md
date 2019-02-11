@@ -69,6 +69,8 @@ query {
         id
         likes
         comments
+        mediaType
+        preview
         original
         timestamp
         caption
