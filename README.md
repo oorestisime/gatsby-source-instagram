@@ -132,6 +132,10 @@ https://stackoverflow.com/a/43570120/8185208
 
 # Changelog
 
+## v0.2.5
+
+- Add preview and media type to fix issue running sharp on videos (#14)
+
 ## v0.2.4
 
 - Return promise so gatsby awaits on files
