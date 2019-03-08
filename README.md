@@ -1,15 +1,36 @@
-# gatsby-source-instagram [![npm version](https://badge.fury.io/js/gatsby-source-instagram.svg)](https://badge.fury.io/js/gatsby-source-instagram)
+<div align="center">
+<h1>gatsby-source-instagram</h1>
 
-Source plugin for getting data from Instagram. There are two ways to get information from profiles
+[![npm version](https://badge.fury.io/js/gatsby-source-instagram.svg)](https://badge.fury.io/js/gatsby-source-instagram)
+![npm](https://img.shields.io/npm/dw/gatsby-source-instagram.svg)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+[![Average time to resolve an issue](https://isitmaintained.com/badge/resolution/oorestisime/gatsby-source-instagram.svg)](https://isitmaintained.com/project/oorestisime/gatsby-source-instagram "Average time to resolve an issue")
+![NPM](https://img.shields.io/npm/l/gatsby-source-instagram.svg)
+
+</div>
+
+Source plugin for sourcing data from Instagram. There are two ways to get information from profiles:
 
 - scraping the homepage of the Instagram account. It can only get last 12 photos.
-- querying the Instagram Graph Api using a provided access_token
+- querying the Instagram Graph Api using a provided `access_token`
+
+# Table of Contents
+
+- [Install](#install)
+- [How to use](#how-to-use)
+  - [Public scraping](#public-scraping)
+  - [Graph API](#graph-api)
+- [How to query](#how-to-query)
+- [Image processing](#image-processing)
+- [Instagram Graph API token](#instagram-graph-api-token)
 
 ## Install
 
 `npm install --save gatsby-source-instagram`
 
 ## How to use
+
+### Public scraping
 
 If you intend to use the public scraping method then you need to pass the concerning username
 
@@ -24,6 +45,8 @@ plugins: [
   },
 ]
 ```
+
+### Graph API
 
 If you intend to use the Instagram Graph Api then you need to pass the instagram id and an access token
 
@@ -55,6 +78,9 @@ Common fields include:
 - timestamp
 - comments
 - caption
+- username
+- preview
+- mediaType
 
 The public scraping method can additionaly retrieve:
 
@@ -129,33 +155,3 @@ https://stackoverflow.com/a/43570120/8185208
 - Paste copied token into the "Access Token" field
 - Make a GET request with "PAGE_ID?fields=access_token"
 - Find the permanent page access token in the response (node "access_token")
-
-# Changelog
-
-## v0.2.5
-
-- Add preview and media type to fix issue running sharp on videos (#14)
-
-## v0.2.4
-
-- Return promise so gatsby awaits on files
-
-## v0.2.3
-
-- Download remote files in parallel
-
-## v0.2.2
-
-### Added
-
-- Get media caption from the API
-
-## v0.2.0
-
-### Added
-
-- Add ability to query using the Instagram Graph API
-
-### Breaking changes
-
-- You no longer access likes using `node.likes.count`, but `node.likes`.

@@ -32,7 +32,7 @@ async function getPublicInstagramPosts({ username }) {
 async function getInstagramPosts({ access_token, instagram_id, username }) {
   return axios
     .get(
-      `https://graph.facebook.com/v3.1/${instagram_id}/media?fields=media_url,thumbnail_url,caption,media_type,like_count,shortcode,timestamp,comments_count&limit=100&access_token=${access_token}`
+      `https://graph.facebook.com/v3.1/${instagram_id}/media?fields=media_url,thumbnail_url,caption,media_type,like_count,shortcode,timestamp,comments_count,username&limit=100&access_token=${access_token}`
     )
     .then(async response => {
       let results = []
@@ -60,6 +60,7 @@ async function getInstagramPosts({ access_token, instagram_id, username }) {
 
 function processDatum(datum) {
   const node = {
+    username: datum.username || datum.owner.username,
     id: datum.shortcode,
     parent: `__SOURCE__`,
     internal: {

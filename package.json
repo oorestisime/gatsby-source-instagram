@@ -8,15 +8,15 @@
     "url": "https://github.com/oorestisime/gatsby-source-instagram/issues"
   },
   "dependencies": {
-    "@babel/preset-env": "^7.0.0",
-    "@babel/runtime": "^7.0.0",
+    "@babel/preset-env": "^7.3.4",
+    "@babel/runtime": "^7.3.4",
     "axios": "^0.18.0",
     "cheerio": "^1.0.0-rc.2",
-    "gatsby-source-filesystem": "^2.0.16"
+    "gatsby-source-filesystem": "^2.0.23"
   },
   "devDependencies": {
-    "@babel/cli": "^7.0.0",
-    "@babel/core": "^7.0.0",
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.3.4",
     "cross-env": "^5.1.4"
   },
   "homepage": "https://github.com/oorestisime/gatsby-source-instagram",
