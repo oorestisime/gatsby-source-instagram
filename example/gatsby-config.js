@@ -25,7 +25,7 @@ module.exports = {
       },
     },
     {
-      resolve: `..`,
+      resolve: `gatsby-source-instagram`,
       options: {
         type: `hashtag`,
         hashtag: `snowing`,
