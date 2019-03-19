@@ -1,4 +1,7 @@
 /*.js
-!index.js
+!./index.js
 node_modules
 .vscode
+.cache
+example/public
+.env

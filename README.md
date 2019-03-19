@@ -9,9 +9,10 @@
 
 </div>
 
-Source plugin for sourcing data from Instagram. There are two ways to get information from profiles:
+Source plugin for sourcing data from Instagram. There are three ways to get information from instagram:
 
 - scraping the homepage of the Instagram account. It can only get last 12 photos.
+- scraping a hashtag page.
 - querying the Instagram Graph Api using a provided `access_token`
 
 # Table of Contents
@@ -20,6 +21,7 @@ Source plugin for sourcing data from Instagram. There are two ways to get inform
 - [How to use](#how-to-use)
   - [Public scraping](#public-scraping)
   - [Graph API](#graph-api)
+  - [Hashtag scraping](#graph-api)
 - [How to query](#how-to-query)
 - [Image processing](#image-processing)
 - [Instagram Graph API token](#instagram-graph-api-token)
@@ -66,6 +68,23 @@ plugins: [
 
 Passing the username in this case is optional. If the Graph Api throws any exception and the username is provided then it will use the public scraping method as a fallback.
 
+### Hashtag scraping
+
+If you want to source nodes from hashtags then you need the following:
+
+```javascript
+// In your gatsby-config.js
+plugins: [
+  {
+    resolve: `gatsby-source-instagram`,
+    options: {
+      type: `hashtag`,
+      hashtag: `snowing`,
+    },
+  },
+]
+```
+
 ## How to query
 
 The plugin tries to provide uniform results regardless of the way you choose to retrieve the information
@@ -78,7 +97,7 @@ Common fields include:
 - timestamp
 - comments
 - caption
-- username
+- username (fallbacks to the hashtag name in case of hashtag scraping)
 - preview
 - mediaType
 
@@ -131,27 +150,25 @@ You can apply image processing on each instagram node. To access image processin
 
 ## Instagram Graph API token
 
-To generate access token follow this guide https://developers.facebook.com/docs/instagram-api/getting-started
+[Special thanks to LekoArts](https://github.com/LekoArts)
 
-You can use this tool to get your instagram account id https://developers.facebook.com/tools/explorer
-
-### Getting a permanent Graph Api key without registering instagram permissions for an app
-
-https://stackoverflow.com/a/43570120/8185208
-
-#### Graph API Explorer
-
-- Select your App from the top right dropdown menu
-- Select "Get User Access Token" from dropdown (right of access token field) and select needed permissions
-- Copy user access token
-
-#### Access Token Debugger
-
-- Paste copied token and press "Debug"
-- Press "Extend Access Token" and copy the generated long-lived user access token
-
-#### Graph API Explorer
-
-- Paste copied token into the "Access Token" field
-- Make a GET request with "PAGE_ID?fields=access_token"
-- Find the permanent page access token in the response (node "access_token")
+1. You need to have a Facebook page (I know... :/)
+1. Go to your site settings -> Instagram -> Login into your Instagram account
+1. Create a [app](https://developers.facebook.com/apps/)
+1. Go to the [Graph API Explorer][gae]
+   1. Select your App from the top right dropdown menu
+   1. Select "Get User Access Token" from dropdown (right of access token field) and select needed permissions (manage_pages, pages_show_list, instagram_basic)
+   1. Copy user access token
+1. [Access Token Debugger][atd]:
+   1. Paste copied token and press "Debug"
+   1. Press "Extend Access Token" and copy the generated long-lived user access token
+1. [Graph API Explorer][gae]:
+   1. Paste copied token into the "Access Token" field
+   1. Make a GET request with "PAGE_ID?fields=access_token"
+   1. Find the permanent page access token in the response (node "access_token")
+1. [Access Token Debugger][atd]:
+   1. Paste the permanent token and press "Debug"
+   1. "Expires" should be "Never"
+   1. Copy the **access token**
+1. [Graph API Explorer][gae]:
+   1. Make a GET request with "PAGE_ID?fields=instagram_business_account" to get your **Business ID**
