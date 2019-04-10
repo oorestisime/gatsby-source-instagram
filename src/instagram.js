@@ -16,13 +16,20 @@ export async function scrapingInstagramPosts({ username }) {
     .then(response => {
       const data = parseResponse(response)
       const photos = []
-      data.ProfilePage[0].graphql.user.edge_owner_to_timeline_media.edges.forEach(
-        edge => {
-          if (edge.node) {
-            photos.push(edge.node)
-          }
+      const {
+        edge_owner_to_timeline_media,
+        full_name,
+        profile_pic_url,
+        biography,
+      } = data.ProfilePage[0].graphql.user
+      edge_owner_to_timeline_media.edges.forEach(edge => {
+        if (edge.node) {
+          edge.node.full_name = full_name
+          edge.node.profile_pic_url = profile_pic_url
+          edge.node.biography = biography
+          photos.push(edge.node)
         }
-      )
+      })
       return photos
     })
     .catch(err => {

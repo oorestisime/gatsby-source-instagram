@@ -39,6 +39,9 @@ function processDatum(datum, params) {
       params.type === `hashtag`
         ? params.hashtag
         : datum.username || datum.owner.username,
+    full_name: datum.full_name,
+    profile_pic_url: datum.profile_pic_url,
+    biography: datum.biography,
     id: datum.shortcode,
     parent: `__SOURCE__`,
     internal: {
