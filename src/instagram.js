@@ -54,6 +54,30 @@ export async function scrapingInstagramHashtags({ hashtag }) {
     })
 }
 
+export async function scrapingInstagramUser({ username }) {
+  return axios
+    .get(`https://www.instagram.com/${username}/`)
+    .then(response => {
+      const data = parseResponse(response)
+      const { user } = data.ProfilePage[0].graphql
+      const infos = {
+        id: user.id,
+        full_name: user.full_name,
+        biography: user.biography,
+        edge_followed_by: user.edge_followed_by,
+        edge_follow: user.edge_follow,
+        profile_pic_url: user.profile_pic_url,
+        profile_pic_url_hd: user.profile_pic_url_hd,
+        username: user.username,
+      }
+      return infos
+    })
+    .catch(err => {
+      console.warn(`\nCould not fetch instagram user. Error status ${err}`)
+      return null
+    })
+}
+
 export async function apiInstagramPosts({
   access_token,
   instagram_id,
