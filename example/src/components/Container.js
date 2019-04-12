@@ -1,6 +1,6 @@
 import React, { useContext } from "react"
 import { Box, Heading, Text, ResponsiveContext } from "grommet"
-import { Instagram } from "."
+import { InstagramPosts } from "."
 
 export const Container = ({ title, text, nodes }) => {
   const size = useContext(ResponsiveContext)
@@ -17,7 +17,7 @@ export const Container = ({ title, text, nodes }) => {
         </Box>
       </Box>
 
-      <Instagram nodes={nodes} />
+      <InstagramPosts nodes={nodes} />
     </Box>
   )
 }

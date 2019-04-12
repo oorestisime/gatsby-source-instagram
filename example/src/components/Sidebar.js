@@ -23,6 +23,9 @@ const SidebarContent = () => (
     <InternalLink to="/hashtag">
       <Button hoverIndicator>Hashtag</Button>
     </InternalLink>
+    <InternalLink to="/profile">
+      <Button hoverIndicator>Profile</Button>
+    </InternalLink>
     <Box direction="row">
       <Button
         as="a"
