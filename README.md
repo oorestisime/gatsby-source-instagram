@@ -9,20 +9,24 @@
 
 </div>
 
-Source plugin for sourcing data from Instagram. There are three ways to get information from instagram:
+Source plugin for sourcing data from Instagram. There are four ways to get information from instagram:
 
-- scraping the homepage of the Instagram account. It can only get last 12 photos.
+- scraping the posts of an Instagram account. It can only get last 12 photos.
 - scraping a hashtag page.
+- scraping a user profile's informations.
 - querying the Instagram Graph Api using a provided `access_token`
 
 # Table of Contents
 
 - [Install](#install)
 - [How to use](#how-to-use)
-  - [Public scraping](#public-scraping)
+  - [Public scraping for posts](#public-scraping-for-posts)
+  - [Public scraping for a user's profile](#public-scraping-for-a-users-profile)
   - [Graph API](#graph-api)
-  - [Hashtag scraping](#graph-api)
+  - [Hashtag scraping](#hashtag-scraping)
 - [How to query](#how-to-query)
+  - [Posts](#posts)
+  - [User profile information](#user-profile-information)
 - [Image processing](#image-processing)
 - [Instagram Graph API token](#instagram-graph-api-token)
 
@@ -32,7 +36,7 @@ Source plugin for sourcing data from Instagram. There are three ways to get info
 
 ## How to use
 
-### Public scraping
+### Public scraping for posts
 
 If you intend to use the public scraping method then you need to pass the concerning username
 
@@ -42,6 +46,22 @@ plugins: [
   {
     resolve: `gatsby-source-instagram`,
     options: {
+      username: `username`,
+    },
+  },
+]
+```
+
+### Public scraping for a user's profile
+If you want to source a user's profile from his username then you need the following:
+
+```javascript
+// In your gatsby-config.js
+plugins: [
+  {
+    resolve: `gatsby-source-instagram`,
+    options: {
+      type: `user-profile`,
       username: `username`,
     },
   },
@@ -86,6 +106,8 @@ plugins: [
 ```
 
 ## How to query
+
+### Posts
 
 The plugin tries to provide uniform results regardless of the way you choose to retrieve the information
 
@@ -138,6 +160,34 @@ query {
         }
       }
     }
+  }
+}
+```
+
+### User profile information
+
+Fields include:
+
+- id
+- username
+- full_name
+- biography
+- edge_followed_by (followers)
+- edge_follow (who the user follows)
+- profile_pic_url
+- profile_pic_url_hd
+
+```graphql
+query {
+  instaUserNode {
+    id
+    username
+    full_name
+    biography
+    edge_followed_by
+    edge_follow
+    profile_pic_url
+    profile_pic_url_hd
   }
 }
 ```
