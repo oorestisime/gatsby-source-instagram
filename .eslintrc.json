@@ -34,7 +34,7 @@
         "requireReturnForObjectLiteral": true
       }
     ],
-    "consistent-return": ["error"],
+    "consistent-return": "off",
     "no-console": "off",
     "no-inner-declarations": "off",
     "prettier/prettier": "error",

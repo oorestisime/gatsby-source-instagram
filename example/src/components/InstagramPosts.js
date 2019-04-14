@@ -60,7 +60,7 @@ const Node = ({ node }) => (
   </Wrapper>
 )
 
-export const Instagram = ({ nodes }) => {
+export const InstagramPosts = ({ nodes }) => {
   const size = useContext(ResponsiveContext)
   return (
     <Grid

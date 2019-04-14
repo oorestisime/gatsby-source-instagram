@@ -11,6 +11,8 @@ module.exports = {
     `gatsby-transformer-remark`,
     `gatsby-plugin-sharp`,
     {
+      // For development
+      // resolve: `..`,
       resolve: `gatsby-source-instagram`,
       options: {
         username: `oasome.blog`,
@@ -19,16 +21,29 @@ module.exports = {
       },
     },
     {
+      // For development
+      // resolve: `..`,
       resolve: `gatsby-source-instagram`,
       options: {
         username: `instagram`,
       },
     },
     {
+      // For development
+      // resolve: `..`,
       resolve: `gatsby-source-instagram`,
       options: {
         type: `hashtag`,
         hashtag: `snowing`,
+      },
+    },
+    {
+      // For development
+      // resolve: `..`,
+      resolve: `gatsby-source-instagram`,
+      options: {
+        type: `user-profile`,
+        username: `oasome.blog`,
       },
     },
   ],

@@ -41,7 +41,7 @@ exports.downloadMediaFile = async ({
           })
         }
       } catch (e) {
-        console.log("error is", e)
+        console.log(`Could not download file, error is`, e)
       }
     }
   }

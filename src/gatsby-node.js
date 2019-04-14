@@ -6,6 +6,7 @@ const {
   scrapingInstagramPosts,
   apiInstagramHashtags,
   scrapingInstagramHashtags,
+  scrapingInstagramUser,
 } = require(`./instagram`)
 
 const defaultOptions = {
@@ -32,8 +33,13 @@ async function getInstagramHashtags(options) {
   return data
 }
 
-function processDatum(datum, params) {
-  const node = {
+async function getInstagramUser(options) {
+  const data = await scrapingInstagramUser(options)
+  return [data]
+}
+
+function createPostNode(datum, params) {
+  return {
     type: params.type,
     username:
       params.type === `hashtag`
@@ -58,6 +64,31 @@ function processDatum(datum, params) {
     comments:
       _.get(datum, `edge_media_to_comment.count`) || datum.comments_count,
   }
+}
+
+function createUserNode(datum, params) {
+  return {
+    type: params.type,
+    id: datum.id,
+    full_name: datum.full_name,
+    biography: datum.biography,
+    edge_followed_by: datum.edge_followed_by,
+    edge_follow: datum.edge_follow,
+    profile_pic_url: datum.profile_pic_url,
+    profile_pic_url_hd: datum.profile_pic_url_hd,
+    username: datum.username,
+    internal: {
+      type: `InstaUserNode`,
+    },
+  }
+}
+
+function processDatum(datum, params) {
+  const node =
+    params.type === `user-profile`
+      ? createUserNode(datum, params)
+      : createPostNode(datum, params)
+
   // Get content digest of node. (Required field)
   const contentDigest = crypto
     .createHash(`md5`)
@@ -80,6 +111,8 @@ exports.sourceNodes = async (
     data = await getInstagramPosts(params)
   } else if (params.type === `hashtag`) {
     data = await getInstagramHashtags(params)
+  } else if (params.type === `user-profile`) {
+    data = await getInstagramUser(params)
   } else {
     console.warn(`Unknown type for gatsby-source-instagram: ${params.type}`)
   }
