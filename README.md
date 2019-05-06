@@ -6,7 +6,7 @@
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 [![Average time to resolve an issue](https://isitmaintained.com/badge/resolution/oorestisime/gatsby-source-instagram.svg)](https://isitmaintained.com/project/oorestisime/gatsby-source-instagram "Average time to resolve an issue")
 ![NPM](https://img.shields.io/npm/l/gatsby-source-instagram.svg)
-
+[![Netlify Status](https://api.netlify.com/api/v1/badges/c2fe26e3-7ba1-47a8-a399-17a02a301658/deploy-status)](https://app.netlify.com/sites/gatsby-src-instagram/deploys)
 </div>
 
 Source plugin for sourcing data from Instagram. There are four ways to get information from instagram:
