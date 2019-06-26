@@ -3,8 +3,15 @@ const cheerio = require(`cheerio`)
 
 const parseResponse = response => {
   const $ = cheerio.load(response.data)
+  const scripts = $(`html > body > script`)
+  // Code smells #40 and #42
+  // I should verify why i get the script before the body tag
+  let id = 0
+  if (scripts.get(0).attribs.type === `application/ld+json`) {
+    id = 1
+  }
   const jsonData = $(`html > body > script`)
-    .get(0)
+    .get(id)
     .children[0].data.replace(/window\._sharedData\s?=\s?{/, `{`)
     .replace(/;$/g, ``)
   return JSON.parse(jsonData).entry_data
@@ -88,7 +95,7 @@ export async function apiInstagramPosts({
       `https://graph.facebook.com/v3.1/${instagram_id}/media?fields=media_url,thumbnail_url,caption,media_type,like_count,shortcode,timestamp,comments_count,username&limit=100&access_token=${access_token}`
     )
     .then(async response => {
-      let results = []
+      const results = []
       results.push(...response.data.data)
       while (response.data.paging.next) {
         response = await axios(response.data.paging.next)
