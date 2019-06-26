@@ -4,7 +4,7 @@ const cheerio = require(`cheerio`)
 const parseResponse = response => {
   const $ = cheerio.load(response.data)
   const jsonData = $(`html > body > script`)
-    .get(0)
+    .get(1)
     .children[0].data.replace(/window\._sharedData\s?=\s?{/, `{`)
     .replace(/;$/g, ``)
   return JSON.parse(jsonData).entry_data
