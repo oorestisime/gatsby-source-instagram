@@ -47,6 +47,7 @@ exports.downloadMediaFile = async ({
   }
 
   if (fileNodeID) {
+    // eslint-disable-next-line require-atomic-updates
     datum.localFile___NODE = fileNodeID
   }
   return datum
