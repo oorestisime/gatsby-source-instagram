@@ -26,9 +26,6 @@
     "eslint-plugin-react": "^7.17.0",
     "prettier": "^1.19.1"
   },
-  "peerDependency": {
-    "gatsby-source-filesystem": "^2.0.27"
-  },
   "homepage": "https://github.com/oorestisime/gatsby-source-instagram",
   "keywords": [
     "gatsby",
@@ -36,6 +33,7 @@
   ],
   "license": "MIT",
   "peerDependencies": {
+    "gatsby-source-filesystem": "^2.0.27",
     "gatsby": ">2.0.0-alpha"
   },
   "repository": "https://github.com/oorestisime/gatsby-source-instagram",
