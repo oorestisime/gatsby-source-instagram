@@ -90,10 +90,11 @@ export async function apiInstagramPosts({
   access_token,
   instagram_id,
   username,
+  limit = 100
 }) {
   return axios
     .get(
-      `https://graph.facebook.com/v3.1/${instagram_id}/media?fields=media_url,thumbnail_url,caption,media_type,like_count,shortcode,timestamp,comments_count,username&limit=100&access_token=${access_token}`
+      `https://graph.facebook.com/v3.1/${instagram_id}/media?fields=media_url,thumbnail_url,caption,media_type,like_count,shortcode,timestamp,comments_count,username&limit=${limit}&access_token=${access_token}`
     )
     .then(async response => {
       const results = []
