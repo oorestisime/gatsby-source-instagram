@@ -90,7 +90,7 @@ export async function apiInstagramPosts({
   access_token,
   instagram_id,
   username,
-  limit = 100
+  limit = '100',
 }) {
   return axios
     .get(
