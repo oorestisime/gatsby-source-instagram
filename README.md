@@ -82,6 +82,7 @@ plugins: [
       username: `username`,
       access_token: "a valid access token",
       instagram_id: "your instagram_business_account id",
+      limit: 100,
     },
   },
 ]
