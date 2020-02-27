@@ -11,6 +11,7 @@ const {
 
 const defaultOptions = {
   type: `account`,
+  paginate: 100,
 }
 
 async function getInstagramPosts(options) {

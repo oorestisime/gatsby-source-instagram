@@ -18,6 +18,8 @@ module.exports = {
         username: `oasome.blog`,
         access_token: process.env.IG_ACCESS_TOKEN,
         instagram_id: `17841408507179516`,
+        paginate: 20,
+        maxPosts: 30,
       },
     },
     {
