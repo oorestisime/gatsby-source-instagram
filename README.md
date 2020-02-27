@@ -7,6 +7,7 @@
 [![Average time to resolve an issue](https://isitmaintained.com/badge/resolution/oorestisime/gatsby-source-instagram.svg)](https://isitmaintained.com/project/oorestisime/gatsby-source-instagram "Average time to resolve an issue")
 ![NPM](https://img.shields.io/npm/l/gatsby-source-instagram.svg)
 [![Netlify Status](https://api.netlify.com/api/v1/badges/c2fe26e3-7ba1-47a8-a399-17a02a301658/deploy-status)](https://app.netlify.com/sites/gatsby-src-instagram/deploys)
+
 </div>
 
 Source plugin for sourcing data from Instagram. There are four ways to get information from instagram:
@@ -82,13 +83,16 @@ plugins: [
       username: `username`,
       access_token: "a valid access token",
       instagram_id: "your instagram_business_account id",
-      limit: 100,
+      paginate: 100,
+      maxPosts: 1000,
     },
   },
 ]
 ```
 
 Passing the username in this case is optional. If the Graph Api throws any exception and the username is provided then it will use the public scraping method as a fallback.
+
+The `paginate` parameter will influence the limit set for the api call (defaults to 100) and the `maxPosts` enables to limit the maximum number of posts we will store. Defaults to undefined.
 
 ### Hashtag scraping
 
