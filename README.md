@@ -54,7 +54,7 @@ plugins: [
 
 ### Public scraping for a user's profile
 
-If you want to source a user's profile from his username then you need the following:
+If you want to source a user's profile from their username then you need the following:
 
 ```javascript
 // In your gatsby-config.js
