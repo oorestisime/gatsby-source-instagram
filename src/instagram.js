@@ -101,8 +101,7 @@ export async function apiInstagramPosts({
       const results = []
       results.push(...response.data.data)
       while (
-        response.data.paging.next ||
-        (maxPosts && results.length <= maxPosts)
+        maxPosts ? (response.data.paging.next && results.length <= maxPosts) : response.data.paging.next
       ) {
         response = await axios(response.data.paging.next)
         results.push(...response.data.data)
