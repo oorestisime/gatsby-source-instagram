@@ -24,7 +24,7 @@
     "eslint-plugin-jsx-a11y": "6.2.3",
     "eslint-plugin-prettier": "3.1.3",
     "eslint-plugin-react": "7.19.0",
-    "prettier": "1.19.1"
+    "prettier": "2.0.4"
   },
   "homepage": "https://github.com/oorestisime/gatsby-source-instagram",
   "keywords": [
