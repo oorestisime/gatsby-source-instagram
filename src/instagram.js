@@ -20,11 +20,10 @@ const parseResponse = response => {
 
 export async function scrapingInstagramPosts({ username }) {
   return axios
-    .get(`https://www.instagram.com/${username}/`)
+    .get(`https://www.instagram.com/${username}/?__a=1`)
     .then(response => {
-      const data = parseResponse(response)
       const photos = []
-      data.ProfilePage[0].graphql.user.edge_owner_to_timeline_media.edges.forEach(
+      response.data.graphql.user.edge_owner_to_timeline_media.edges.forEach(
         edge => {
           if (edge.node) {
             photos.push(edge.node)
@@ -41,11 +40,10 @@ export async function scrapingInstagramPosts({ username }) {
 
 export async function scrapingInstagramHashtags({ hashtag }) {
   return axios
-    .get(`https://www.instagram.com/explore/tags/${hashtag}/`)
+    .get(`https://www.instagram.com/explore/tags/${hashtag}/?__a=1`)
     .then(response => {
-      const data = parseResponse(response)
       const photos = []
-      data.TagPage[0].graphql.hashtag.edge_hashtag_to_media.edges.forEach(
+      response.data.graphql.hashtag.edge_hashtag_to_media.edges.forEach(
         edge => {
           if (edge.node) {
             photos.push(edge.node)
@@ -64,10 +62,9 @@ export async function scrapingInstagramHashtags({ hashtag }) {
 
 export async function scrapingInstagramUser({ username }) {
   return axios
-    .get(`https://www.instagram.com/${username}/`)
+    .get(`https://www.instagram.com/${username}/?__a=1`)
     .then(response => {
-      const data = parseResponse(response)
-      const { user } = data.ProfilePage[0].graphql
+      const { user } = response.data.graphql
       const infos = {
         id: user.id,
         full_name: user.full_name,
@@ -103,7 +100,9 @@ export async function apiInstagramPosts({
       // if maxPosts option specified, then check if there is a next field in the response data and the results' length <= maxPosts
       // otherwise, fetch as more as it can
       while (
-        maxPosts ? (response.data.paging.next && results.length <= maxPosts) : response.data.paging.next
+        maxPosts
+          ? response.data.paging.next && results.length <= maxPosts
+          : response.data.paging.next
       ) {
         response = await axios(response.data.paging.next)
         results.push(...response.data.data)
