@@ -37,3 +37,4 @@ examples
 .vscode
 example
 netlify.toml
+renovate.json
