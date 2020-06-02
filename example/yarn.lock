@@ -5429,10 +5429,10 @@ gatsby-source-filesystem@^2.0.1:
     valid-url "^1.0.9"
     xstate "^4.7.2"
 
-gatsby-source-instagram@0.7.0:
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/gatsby-source-instagram/-/gatsby-source-instagram-0.7.0.tgz#a9d31989422afa63b6bd4c48dbf05550fbd54bc4"
-  integrity sha512-nDOULuh0EzkRbZD/o4O0RK+clKuY5hvVCg8n0NhEGGIz168vsCrVME0o35SC1+4Q8X+OwiwdEwORD15SjoX7Aw==
+gatsby-source-instagram@0.7.1:
+  version "0.7.1"
+  resolved "https://registry.yarnpkg.com/gatsby-source-instagram/-/gatsby-source-instagram-0.7.1.tgz#722f6e8e4d78fabd08df8f65d0ac9e1d2f565576"
+  integrity sha512-8v168wwBqodqOblohBB/UOiDWl5FEOXGVk9YMjMYW1JhUq2DgGzk8laNE8eYKcKoi82YJ7nK7NBt4repP3QVeQ==
   dependencies:
     axios "^0.19.0"
     cheerio "^1.0.0-rc.3"
