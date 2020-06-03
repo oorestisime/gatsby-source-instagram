@@ -1,27 +1,11 @@
 /* eslint-disable camelcase */
 const axios = require(`axios`)
-const cheerio = require(`cheerio`)
-
-const parseResponse = response => {
-  const $ = cheerio.load(response.data)
-  const scripts = $(`html > body > script`)
-  // Code smells #40 and #42
-  // I should verify why i get the script before the body tag
-  let id = 0
-  if (scripts.get(0).attribs.type === `application/ld+json`) {
-    id = 1
-  }
-  const jsonData = $(`html > body > script`)
-    .get(id)
-    .children[0].data.replace(/window\._sharedData\s?=\s?{/, `{`)
-    .replace(/;$/g, ``)
-  return JSON.parse(jsonData).entry_data
-}
 
 export async function scrapingInstagramPosts({ username }) {
   return axios
     .get(`https://www.instagram.com/${username}/?__a=1`)
     .then(response => {
+      console.log(response.data)
       const photos = []
       response.data.graphql.user.edge_owner_to_timeline_media.edges.forEach(
         edge => {
