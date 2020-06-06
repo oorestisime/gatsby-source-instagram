@@ -3,12 +3,13 @@ const axios = require(`axios`)
 
 export async function scrapingInstagramPosts({ username }) {
   return axios
-    .get(`https://www.instagram.com/${username}/?__a=1`)
-    .then(response => {
-      console.log(response.data)
+    .get(
+      `https://instagram.com/graphql/query/?query_id=17888483320059182&variables={"id":"${username}","first":100,"after":null}`
+    )
+    .then((response) => {
       const photos = []
-      response.data.graphql.user.edge_owner_to_timeline_media.edges.forEach(
-        edge => {
+      response.data.data.user.edge_owner_to_timeline_media.edges.forEach(
+        (edge) => {
           if (edge.node) {
             photos.push(edge.node)
           }
@@ -16,7 +17,7 @@ export async function scrapingInstagramPosts({ username }) {
       )
       return photos
     })
-    .catch(err => {
+    .catch((err) => {
       console.warn(`\nCould not fetch instagram posts. Error status ${err}`)
       return null
     })
@@ -25,10 +26,10 @@ export async function scrapingInstagramPosts({ username }) {
 export async function scrapingInstagramHashtags({ hashtag }) {
   return axios
     .get(`https://www.instagram.com/explore/tags/${hashtag}/?__a=1`)
-    .then(response => {
+    .then((response) => {
       const photos = []
       response.data.graphql.hashtag.edge_hashtag_to_media.edges.forEach(
-        edge => {
+        (edge) => {
           if (edge.node) {
             photos.push(edge.node)
           }
@@ -36,7 +37,7 @@ export async function scrapingInstagramHashtags({ hashtag }) {
       )
       return photos
     })
-    .catch(err => {
+    .catch((err) => {
       console.warn(
         `\nCould not fetch instagram posts from hashtag. Error status ${err}`
       )
@@ -47,7 +48,7 @@ export async function scrapingInstagramHashtags({ hashtag }) {
 export async function scrapingInstagramUser({ username }) {
   return axios
     .get(`https://www.instagram.com/${username}/?__a=1`)
-    .then(response => {
+    .then((response) => {
       const { user } = response.data.graphql
       const infos = {
         id: user.id,
@@ -61,7 +62,7 @@ export async function scrapingInstagramUser({ username }) {
       }
       return infos
     })
-    .catch(err => {
+    .catch((err) => {
       console.warn(`\nCould not fetch instagram user. Error status ${err}`)
       return null
     })
@@ -78,7 +79,7 @@ export async function apiInstagramPosts({
     .get(
       `https://graph.facebook.com/v3.1/${instagram_id}/media?fields=media_url,thumbnail_url,caption,media_type,like_count,shortcode,timestamp,comments_count,username&limit=${paginate}&access_token=${access_token}`
     )
-    .then(async response => {
+    .then(async (response) => {
       const results = []
       results.push(...response.data.data)
       // if maxPosts option specified, then check if there is a next field in the response data and the results' length <= maxPosts
@@ -93,7 +94,7 @@ export async function apiInstagramPosts({
       }
       return maxPosts ? results.slice(0, maxPosts) : results
     })
-    .catch(async err => {
+    .catch(async (err) => {
       console.warn(
         `\nCould not get instagram posts using the Graph API. Error status ${err}`
       )

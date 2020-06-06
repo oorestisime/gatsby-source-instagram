@@ -213,7 +213,7 @@ You can apply image processing on each instagram node. To access image processin
 1. Create a [app](https://developers.facebook.com/apps/)
 1. Go to the [Graph API Explorer](https://developers.facebook.com/tools/explorer/)
    1. Select your App from the top right dropdown menu
-   1. Select "Get User Access Token" from dropdown (right of access token field) and select needed permissions (manage_pages, pages_show_list, instagram_basic)
+   1. Select "Get User Access Token" from dropdown (right of access token field) and select needed permissions (pages_manage_ads, pages_manage_metadata, pages_read_engagement, pages_read_user_content, pages_show_list, instagram_basic)
    1. Click "Generate Access Token"
    1. Copy user access token
 1. [Access Token Debugger](https://developers.facebook.com/tools/debug/accesstoken/):

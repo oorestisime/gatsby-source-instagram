@@ -45,7 +45,7 @@ function createPostNode(datum, params) {
     username:
       params.type === `hashtag`
         ? params.hashtag
-        : datum.username || datum.owner.username,
+        : datum.username || datum.owner.username || datum.owner.id,
     id: datum.shortcode,
     parent: `__SOURCE__`,
     internal: {
@@ -121,7 +121,7 @@ exports.sourceNodes = async (
   // Process data into nodes.
   if (data) {
     return Promise.all(
-      data.map(async datum => {
+      data.map(async (datum) => {
         const res = await normalize.downloadMediaFile({
           datum: processDatum(datum, params),
           store,
