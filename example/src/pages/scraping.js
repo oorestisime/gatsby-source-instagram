@@ -15,7 +15,7 @@ const IndexPage = ({ data: { allInstaNode } }) => (
 
 export const pageQuery = graphql`
   query ScrapingQuery {
-    allInstaNode(filter: { username: { eq: "instagram" } }) {
+    allInstaNode(filter: { username: { eq: "25025320" } }) {
       edges {
         node {
           id

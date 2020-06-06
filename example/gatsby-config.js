@@ -27,26 +27,26 @@ module.exports = {
       // resolve: `..`,
       resolve: `gatsby-source-instagram`,
       options: {
-        username: `instagram`,
+        username: `25025320`,
       },
     },
-    {
-      // For development
-      // resolve: `..`,
-      resolve: `gatsby-source-instagram`,
-      options: {
-        type: `hashtag`,
-        hashtag: `snowing`,
-      },
-    },
-    {
-      // For development
-      // resolve: `..`,
-      resolve: `gatsby-source-instagram`,
-      options: {
-        type: `user-profile`,
-        username: `oasome.blog`,
-      },
-    },
+    // {
+    //   // For development
+    //   resolve: `..`,
+    //   // resolve: `gatsby-source-instagram`,
+    //   options: {
+    //     type: `hashtag`,
+    //     hashtag: `snowing`,
+    //   },
+    // },
+    // {
+    //   // For development
+    //   resolve: `..`,
+    //   // resolve: `gatsby-source-instagram`,
+    //   options: {
+    //     type: `user-profile`,
+    //     username: `oasome.blog`,
+    //   },
+    // },
   ],
 }
