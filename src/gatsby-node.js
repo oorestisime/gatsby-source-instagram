@@ -52,7 +52,10 @@ function createPostNode(datum, params) {
       type: `InstaNode`,
     },
     children: [],
-    likes: _.get(datum, `edge_liked_by.count`) || datum.like_count,
+    likes:
+      _.get(datum, `edge_liked_by.count`) ||
+      _.get(datum, `edge_media_preview_like.count`) ||
+      datum.like_count,
     caption:
       _.get(datum, `edge_media_to_caption.edges[0].node.text`) || datum.caption,
     thumbnails: datum.thumbnail_resources,
