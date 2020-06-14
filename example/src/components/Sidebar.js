@@ -20,12 +20,12 @@ const SidebarContent = () => (
     <InternalLink to="/scraping">
       <Button hoverIndicator>Public Scraping</Button>
     </InternalLink>
-    <InternalLink to="/hashtag">
+    {/* <InternalLink to="/hashtag">
       <Button hoverIndicator>Hashtag</Button>
     </InternalLink>
     <InternalLink to="/profile">
       <Button hoverIndicator>Profile</Button>
-    </InternalLink>
+    </InternalLink> */}
     <Box direction="row">
       <Button
         as="a"

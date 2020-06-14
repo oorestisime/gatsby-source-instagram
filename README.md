@@ -12,7 +12,7 @@
 
 Source plugin for sourcing data from Instagram. There are four ways to get information from instagram:
 
-- scraping the posts of an Instagram account. It can only get last 12 photos.
+- scraping the posts of an Instagram account. It can only get last 50 photos.
 - scraping a hashtag page.
 - scraping a user profile's informations.
 - querying the Instagram Graph Api using a provided `access_token`
@@ -39,7 +39,8 @@ Source plugin for sourcing data from Instagram. There are four ways to get infor
 
 ### Public scraping for posts
 
-If you intend to use the public scraping method then you need to pass the concerning username
+If you intend to use the public scraping method then you need to pass the concerning username id.
+You can find it https://codeofaninja.com/tools/find-instagram-user-id
 
 ```javascript
 // In your gatsby-config.js
@@ -47,13 +48,18 @@ plugins: [
   {
     resolve: `gatsby-source-instagram`,
     options: {
-      username: `username`,
+      username: `usernameId`,
     },
   },
 ]
 ```
 
 ### Public scraping for a user's profile
+
+** Deprecated **
+
+Due to instagram adding a login screen for scraping calls this is no longer working on Cloud builders.
+I am currently researching a solution, ideas and PRs welcome.
 
 If you want to source a user's profile from their username then you need the following:
 
@@ -95,6 +101,11 @@ Passing the username in this case is optional. If the Graph Api throws any excep
 The `paginate` parameter will influence the limit set for the api call (defaults to 100) and the `maxPosts` enables to limit the maximum number of posts we will store. Defaults to undefined.
 
 ### Hashtag scraping
+
+** Deprecated **
+
+Due to instagram adding a login screen for scraping calls this is no longer working on Cloud builders.
+I am currently researching a solution, ideas and PRs welcome.
 
 If you want to source nodes from hashtags then you need the following:
 
@@ -172,6 +183,11 @@ query {
 
 ### User profile information
 
+** Deprecated **
+
+Due to instagram adding a login screen for scraping calls this is no longer working on Cloud builders.
+I am currently researching a solution, ideas and PRs welcome.
+
 Fields include:
 
 - id
@@ -206,26 +222,37 @@ You can apply image processing on each instagram node. To access image processin
 
 ## Instagram Graph API token
 
-[Special thanks to LekoArts](https://github.com/LekoArts)
+** Disclaimer: ** These steps might not be clear, or not exactly working for everybody. Working on updated or automated steps right now. Progress is at https://github.com/oorestisime/gatsby-source-instagram/issues/24
+Any help on this side is greatly welcomed and appreciated!
 
 1. You need to have a Facebook page (I know... :/)
 1. Go to your site settings -> Instagram -> Login into your Instagram account
 1. Create a [app](https://developers.facebook.com/apps/)
 1. Go to the [Graph API Explorer](https://developers.facebook.com/tools/explorer/)
-   1. Select your App from the top right dropdown menu
-   1. Select "Get User Access Token" from dropdown (right of access token field) and select needed permissions (pages_manage_ads, pages_manage_metadata, pages_read_engagement, pages_read_user_content, pages_show_list, instagram_basic)
+   1. Make sure you are using v7 as api version
+   1. Select your facebook app
    1. Click "Generate Access Token"
-   1. Copy user access token
+   1. Add the following permissions (pages_manage_ads, pages_manage_metadata, pages_read_engagement, pages_read_user_content, pages_show_list, instagram_basic)
+   1. Make a GET request at `me/accounts`
+   1. copy the access_token in the response (we call this **temporary_token**)
+   1. click on the id to change the explorer url and append `?fields=instagram_business_account&access_token={access-token}`
+   1. save your `instagram_business_account.id`, this is your **instagram_id**
 1. [Access Token Debugger](https://developers.facebook.com/tools/debug/accesstoken/):
-   1. Paste copied token and press "Debug"
-   1. Press "Extend Access Token" and copy the generated long-lived user access token
-1. [Graph API Explorer](https://developers.facebook.com/tools/explorer/):
-   1. Paste copied token into the "Access Token" field
-   1. Make a GET request with "PAGE_ID?fields=access_token"
-   1. Find the permanent page access token in the response (node "access_token")
-1. [Access Token Debugger](https://developers.facebook.com/tools/debug/accesstoken/):
-   1. Paste the permanent token and press "Debug"
-   1. "Expires" should be "Never"
-   1. Copy the **access token**
-1. [Graph API Explorer](https://developers.facebook.com/tools/explorer/):
-   1. Make a GET request with "PAGE_ID?fields=instagram_business_account" to get your **Business ID**
+   1. Paste your temporary_token and press "Debug"
+   1. You should see this token now expires in 3 months
+   1. Press "Extend Access Token" and press the new debug that appears next to the token
+   1. You should see this token now never expires
+   1. Copy this new token (we will call this **access_token**)
+
+With these two information you can now use the plugin as:
+
+```
+{
+  resolve: `gatsby-source-instagram`,
+  options: {
+    username: username,
+    access_token: access_token,
+    instagram_id: instagram_id,
+  },
+},
+```

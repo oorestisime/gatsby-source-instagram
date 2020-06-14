@@ -12,8 +12,8 @@ module.exports = {
     `gatsby-plugin-sharp`,
     {
       // For development
-      // resolve: `..`,
-      resolve: `gatsby-source-instagram`,
+      resolve: `..`,
+      // resolve: `gatsby-source-instagram`,
       options: {
         username: `oasome.blog`,
         access_token: process.env.IG_ACCESS_TOKEN,
@@ -24,8 +24,8 @@ module.exports = {
     },
     {
       // For development
-      // resolve: `..`,
-      resolve: `gatsby-source-instagram`,
+      resolve: `..`,
+      // resolve: `gatsby-source-instagram`,
       options: {
         username: `25025320`,
       },
