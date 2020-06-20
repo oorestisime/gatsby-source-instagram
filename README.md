@@ -40,7 +40,10 @@ Source plugin for sourcing data from Instagram. There are four ways to get infor
 ### Public scraping for posts
 
 If you intend to use the public scraping method then you need to pass the concerning username id.
-You can find it https://codeofaninja.com/tools/find-instagram-user-id
+You can determine it by taking the following steps:
+1. Open a browser and go to the Instagram page of the user – e.g. https://www.instagram.com/oasome.blog/
+1. Right-click on the web page to open the right-click context menu and select Page Source / View page source / Show Page Source. Safari users, please make sure that the developer tools are enabled – see [Enabling Web Inspector - Apple Developer](https://developer.apple.com/library/archive/documentation/NetworkingInternetWeb/Conceptual/Web_Inspector_Tutorial/EnableWebInspector/EnableWebInspector.html)
+1. Search for `profilePage_`. The number that follows is the username id. If you view the page source of https://www.instagram.com/oasome.blog/, you will find `profilePage_8556131572`. So, `8556131572` is the username id of the username `oasome.blog`.
 
 ```javascript
 // In your gatsby-config.js
