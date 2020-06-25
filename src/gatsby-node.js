@@ -67,6 +67,8 @@ function createPostNode(datum, params) {
     dimensions: datum.dimensions,
     comments:
       _.get(datum, `edge_media_to_comment.count`) || datum.comments_count,
+    permalink: datum.permalink,
+    carouselImages: _.get(datum, `children.data`),
   }
 }
 
