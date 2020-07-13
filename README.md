@@ -172,8 +172,14 @@ query {
         },
         permalink,
         carouselImages {
-          media_url
-        }
+          preview,
+          localFile {
+          childImageSharp {
+            fixed(width: 150, height: 150) {
+              ...GatsbyImageSharpFixed
+            }
+          }
+        },
         # Only available with the public api scraper
         thumbnails {
           src
