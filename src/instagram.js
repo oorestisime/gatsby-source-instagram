@@ -84,7 +84,7 @@ function getHashtags(data) {
         : ``
 
     // combine caption and comment strings, then run match
-    const captionHashtags = (caption + comments).match(hashtagMatch)
+    const captionHashtags = (caption + ` ` + comments).match(hashtagMatch)
 
     const hashtags =
       captionHashtags?.length > 0 ?? false
