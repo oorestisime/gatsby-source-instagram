@@ -183,6 +183,7 @@ query {
         original
         timestamp
         caption
+        hashtags
         localFile {
           childImageSharp {
             fixed(width: 150, height: 150) {
