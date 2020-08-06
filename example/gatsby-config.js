@@ -20,6 +20,7 @@ module.exports = {
         instagram_id: `17841408507179516`,
         paginate: 20,
         maxPosts: 30,
+        hashtags: true,
       },
     },
     {

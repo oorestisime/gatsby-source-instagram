@@ -94,6 +94,7 @@ plugins: [
       instagram_id: "your instagram_business_account id",
       paginate: 100,
       maxPosts: 1000,
+      hashtags: true
     },
   },
 ]
@@ -102,6 +103,27 @@ plugins: [
 Passing the username in this case is optional. If the Graph Api throws any exception and the username is provided then it will use the public scraping method as a fallback.
 
 The `paginate` parameter will influence the limit set for the api call (defaults to 100) and the `maxPosts` enables to limit the maximum number of posts we will store. Defaults to undefined.
+
+The `hashtag` parameter can be set to true which will also grab the hashtags from the first 3 comments by default. If you'd like to change the number of comments to check for hashtags you can pass an object like below. Defaults to false.
+
+```javascript
+// In your gatsby-config.js
+plugins: [
+  {
+    resolve: `gatsby-source-instagram`,
+    options: {
+      username: `username`,
+      access_token: "a valid access token",
+      instagram_id: "your instagram_business_account id",
+      hashtags: {
+        enabled: true,
+        commentDepth: 10
+      }
+    },
+  },
+]
+
+```
 
 ### Hashtag scraping
 
@@ -161,6 +183,7 @@ query {
         original
         timestamp
         caption
+        hashtags
         localFile {
           childImageSharp {
             fixed(width: 150, height: 150) {
