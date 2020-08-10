@@ -68,7 +68,7 @@ export async function scrapingInstagramUser({ username }) {
     })
 }
 
-export function getHashtags(data) {
+function getHashtags(data) {
   return data.map((datum) => {
     // matches non url hashtags
     const hashtagMatch = /(^|\s)(#[a-z\d-_]+)/gi
@@ -120,9 +120,12 @@ export async function apiInstagramPosts({
     )
     .then(async (response) => {
       const results = []
-      results.push(...response.data.data) // if maxPosts option specified, then check if there is a next field in the response data and the results' length <= maxPosts
-      // otherwise, fetch as more as it can
-
+      results.push(...response.data.data)
+      
+      /**
+       * If maxPosts option specified, then check if there is a next field in the response data and the results' length <= maxPosts
+       * otherwise, fetch as more as it can.
+       */
       while (
         maxPosts
           ? response.data.paging.next && results.length <= maxPosts
