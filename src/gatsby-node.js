@@ -67,6 +67,7 @@ function createPostNode(datum, params) {
     timestamp: datum.taken_at_timestamp || new Date(datum.timestamp).getTime() / 1000,
     dimensions: datum.dimensions,
     comments: _.get(datum, `edge_media_to_comment.count`) || datum.comments_count,
+    hashtags: datum.hashtags,
     permalink: datum.permalink,
     carouselImages: _.get(datum, `children.data`, []).map(imgObj => ({preview: imgObj.media_url, ...imgObj}))
   };
