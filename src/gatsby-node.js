@@ -1,9 +1,5 @@
-"use strict"
-
 const _ = require(`lodash`)
-
 const crypto = require(`crypto`)
-
 const normalize = require(`./normalize`)
 
 const {
@@ -17,6 +13,7 @@ const {
 const defaultOptions = {
   type: `account`,
   paginate: 100,
+  hashtags: false,
 }
 
 async function getInstagramPosts(options) {
@@ -108,8 +105,9 @@ function processDatum(datum, params) {
   const node =
     params.type === `user-profile`
       ? createUserNode(datum, params)
-      : createPostNode(datum, params) // Get content digest of node. (Required field)
-
+      : createPostNode(datum, params)
+      
+  // Get content digest of node. (Required field)
   const contentDigest = crypto
     .createHash(`md5`)
     .update(JSON.stringify(node))
@@ -134,8 +132,9 @@ exports.sourceNodes = async (
     data = await getInstagramUser(params)
   } else {
     console.warn(`Unknown type for gatsby-source-instagram: ${params.type}`)
-  } // Process data into nodes.
-
+  }
+  
+  // Process data into nodes.
   if (data) {
     return Promise.all(
       data.map(async (datum) => {

@@ -1,15 +1,7 @@
-"use strict"
-
-exports.__esModule = true
-exports.scrapingInstagramPosts = scrapingInstagramPosts
-exports.scrapingInstagramHashtags = scrapingInstagramHashtags
-exports.scrapingInstagramUser = scrapingInstagramUser
-exports.apiInstagramPosts = apiInstagramPosts
-
 /* eslint-disable camelcase */
 const axios = require(`axios`)
 
-async function scrapingInstagramPosts({ username }) {
+export async function scrapingInstagramPosts({ username }) {
   return axios
     .get(
       `https://instagram.com/graphql/query/?query_id=17888483320059182&variables={"id":"${username}","first":100,"after":null}`
@@ -31,7 +23,7 @@ async function scrapingInstagramPosts({ username }) {
     })
 }
 
-async function scrapingInstagramHashtags({ hashtag }) {
+export async function scrapingInstagramHashtags({ hashtag }) {
   return axios
     .get(`https://www.instagram.com/explore/tags/${hashtag}/?__a=1`)
     .then((response) => {
@@ -53,7 +45,7 @@ async function scrapingInstagramHashtags({ hashtag }) {
     })
 }
 
-async function scrapingInstagramUser({ username }) {
+export async function scrapingInstagramUser({ username }) {
   return axios
     .get(`https://www.instagram.com/${username}/?__a=1`)
     .then((response) => {
@@ -76,7 +68,7 @@ async function scrapingInstagramUser({ username }) {
     })
 }
 
-function getHashtags(data) {
+export function getHashtags(data) {
   return data.map((datum) => {
     // matches non url hashtags
     const hashtagMatch = /(^|\s)(#[a-z\d-_]+)/gi
@@ -108,7 +100,7 @@ function getHashtags(data) {
   })
 }
 
-async function apiInstagramPosts({
+export async function apiInstagramPosts({
   access_token,
   instagram_id,
   username,
