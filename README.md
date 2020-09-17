@@ -164,6 +164,8 @@ Common fields include:
 - username (fallbacks to the hashtag name in case of hashtag scraping)
 - preview
 - mediaType
+- permalink
+- carouselImages
 
 The public scraping method can additionaly retrieve:
 
@@ -190,7 +192,17 @@ query {
               ...GatsbyImageSharpFixed
             }
           }
-        }
+        },
+        permalink,
+        carouselImages {
+          preview,
+          localFile {
+          childImageSharp {
+            fixed(width: 150, height: 150) {
+              ...GatsbyImageSharpFixed
+            }
+          }
+        },
         # Only available with the public api scraper
         thumbnails {
           src

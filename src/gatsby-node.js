@@ -1,6 +1,7 @@
 const _ = require(`lodash`)
 const crypto = require(`crypto`)
 const normalize = require(`./normalize`)
+
 const {
   apiInstagramPosts,
   scrapingInstagramPosts,
@@ -17,21 +18,25 @@ const defaultOptions = {
 
 async function getInstagramPosts(options) {
   let data
+
   if (options.access_token && options.instagram_id) {
     data = await apiInstagramPosts(options)
   } else {
     data = await scrapingInstagramPosts(options)
   }
+
   return data
 }
 
 async function getInstagramHashtags(options) {
   let data
+
   if (options.access_token && options.instagram_id) {
     data = await apiInstagramHashtags(options)
   } else {
     data = await scrapingInstagramHashtags(options)
   }
+
   return data
 }
 
@@ -69,6 +74,13 @@ function createPostNode(datum, params) {
     comments:
       _.get(datum, `edge_media_to_comment.count`) || datum.comments_count,
     hashtags: datum.hashtags,
+    permalink: datum.permalink,
+    carouselImages: _.get(datum, `children.data`, []).map((imgObj) => {
+      return {
+        preview: imgObj.media_url,
+        ...imgObj,
+      }
+    }),
   }
 }
 
@@ -94,13 +106,12 @@ function processDatum(datum, params) {
     params.type === `user-profile`
       ? createUserNode(datum, params)
       : createPostNode(datum, params)
-
+      
   // Get content digest of node. (Required field)
   const contentDigest = crypto
     .createHash(`md5`)
     .update(JSON.stringify(node))
     .digest(`hex`)
-
   node.internal.contentDigest = contentDigest
   return node
 }
@@ -111,8 +122,8 @@ exports.sourceNodes = async (
 ) => {
   const { createNode, touchNode } = actions
   const params = { ...defaultOptions, ...options }
-
   let data
+
   if (params.type === `account`) {
     data = await getInstagramPosts(params)
   } else if (params.type === `hashtag`) {
@@ -122,7 +133,7 @@ exports.sourceNodes = async (
   } else {
     console.warn(`Unknown type for gatsby-source-instagram: ${params.type}`)
   }
-
+  
   // Process data into nodes.
   if (data) {
     return Promise.all(
