@@ -1,10 +1,10 @@
 /* eslint-disable camelcase */
 const axios = require(`axios`)
 
-export async function scrapingInstagramPosts({ username }) {
+export async function scrapingInstagramPosts({ username, maxPosts = 100 }) {
   return axios
     .get(
-      `https://instagram.com/graphql/query/?query_id=17888483320059182&variables={"id":"${username}","first":100,"after":null}`
+      `https://instagram.com/graphql/query/?query_id=17888483320059182&variables={"id":"${username}","first":${maxPosts},"after":null}`
     )
     .then((response) => {
       const photos = []
@@ -149,6 +149,7 @@ export async function apiInstagramPosts({
       if (username) {
         const photos = await scrapingInstagramPosts({
           username,
+          maxPosts
         })
         return photos
       }
