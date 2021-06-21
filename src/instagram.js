@@ -7,15 +7,17 @@ export async function scrapingInstagramPosts({ username }) {
       `https://instagram.com/graphql/query/?query_id=17888483320059182&variables={"id":"${username}","first":100,"after":null}`
     )
     .then((response) => {
-      const photos = []
-      response.data.data.user.edge_owner_to_timeline_media.edges.forEach(
-        (edge) => {
+      if(response.data.includes("Login • Instagram")){
+        console.error(`gatsby-source-instagram: Instagram API returned login page due to rate limiting. If you wish to avoid this error please use Graph API. Read docs for more info:\nhttps://github.com/oorestisime/gatsby-source-instagram#common-build-errors`);
+        return null;
+      } else {
+        response.data.data.user.edge_owner_to_timeline_media.edges.forEach(edge => {
           if (edge.node) {
-            photos.push(edge.node)
+            photos.push(edge.node);
           }
-        }
-      )
-      return photos
+        });
+        return photos;
+      }
     })
     .catch((err) => {
       console.warn(`\nCould not fetch instagram posts. Error status ${err}`)
