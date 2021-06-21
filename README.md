@@ -294,3 +294,13 @@ With these two information you can now use the plugin as:
   },
 },
 ```
+
+---
+
+## Common Build Errors
+
+### Cannot query field "allInstaNode" on type "Query" or Instagram API returned login page
+
+This error is typically caused by Instagram rate limiting calls to its API by returning a login screen. You can use the [Graph API](#instagram-graph-api-token) to avoid this error.
+
+If you are hosting on Netlify you may see this error appear more often when trying to build as it seems Netlify's servers get rate limited more frequently.
