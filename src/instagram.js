@@ -11,12 +11,13 @@ export async function scrapingInstagramPosts({ username }) {
         console.error(`gatsby-source-instagram: Instagram API returned login page due to rate limiting. If you wish to avoid this error please use Graph API. Read docs for more info:\nhttps://github.com/oorestisime/gatsby-source-instagram#common-build-errors`);
         return null;
       } else {
+        const photos = []
         response.data.data.user.edge_owner_to_timeline_media.edges.forEach(edge => {
           if (edge.node) {
-            photos.push(edge.node);
+            photos.push(edge.node)
           }
         });
-        return photos;
+        return photos
       }
     })
     .catch((err) => {
