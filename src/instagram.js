@@ -7,7 +7,7 @@ export async function scrapingInstagramPosts({ username }) {
       `https://instagram.com/graphql/query/?query_id=17888483320059182&variables={"id":"${username}","first":100,"after":null}`
     )
     .then((response) => {
-      if(response.data.includes("Login • Instagram")){
+      if(typeof response.data == "string" && response.data.includes("Login • Instagram")){
         console.error(`gatsby-source-instagram: Instagram API returned login page due to rate limiting. If you wish to avoid this error please use Graph API. Read docs for more info:\nhttps://github.com/oorestisime/gatsby-source-instagram#common-build-errors`);
         return null;
       } else {
