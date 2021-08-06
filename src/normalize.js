@@ -15,6 +15,7 @@ const createFileNode = async ({
   createNode,
   createNodeId,
   touchNode,
+  getNode,
 }) => {
   const mediaDataCacheKey = `instagram-media-${id}`
   const cacheMediaData = await cache.get(mediaDataCacheKey)
@@ -22,7 +23,7 @@ const createFileNode = async ({
 
   if (cacheMediaData) {
     fileNodeID = cacheMediaData.fileNodeID
-    touchNode({ nodeId: fileNodeID })
+    touchNode(getNode(fileNodeID))
     return fileNodeID
   }
 
@@ -56,6 +57,7 @@ exports.downloadMediaFile = async ({
   createNode,
   createNodeId,
   touchNode,
+  getNode,
 }) => {
   const { carouselImages, id, preview } = datum
 
@@ -68,6 +70,7 @@ exports.downloadMediaFile = async ({
     createNode,
     createNodeId,
     touchNode,
+    getNode,
   })
 
   /** eslint-disable-next-line require-atomic-updates */
@@ -87,6 +90,7 @@ exports.downloadMediaFile = async ({
       createNode,
       createNodeId,
       touchNode,
+      getNode,
     })
 
     /** eslint-disable-next-line require-atomic-updates */
