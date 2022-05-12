@@ -120,11 +120,9 @@ export async function apiInstagramPosts({
   customer_username = null,
   facebook_api_version = `v13.0`,
 }) {
-  const hashtagsEnabled = hashtags === true || hashtags?.enabled
-  const hashtagsCommentDepth = hashtags?.commentDepth ?? 3
-  const commentsParam = hashtagsEnabled
-    ? `,comments.limit(${hashtagsCommentDepth}){text}`
-    : ``
+  // const hashtagsEnabled = hashtags === true || hashtags?.enabled
+  // const hashtagsCommentDepth = hashtags?.commentDepth ?? 3
+  // const commentsParam = hashtagsEnabled ? `,comments.limit(${hashtagsCommentDepth}){text}` : ``
 
   /** Patch feature: Get instagram account posts from other business accounts
    *
@@ -140,49 +138,47 @@ export async function apiInstagramPosts({
     .get(
       `https://graph.facebook.com/${facebook_api_version}/${instagram_id}?fields=business_discovery.username(${customer_username}){username,website,name,ig_id,id,profile_picture_url,biography,follows_count,followers_count,media_count,media{id,caption,like_count,comments_count,timestamp,username,media_product_type,media_type,owner,permalink,media_url,children{media_url}}}&access_token=${access_token}`
     )
-    .then((response) => {
-      return response.data.business_discovery.media.data
-    })
+    .then((response) => response.data.business_discovery.media.data)
 
-  return axios
-    .get(
-      `https://graph.facebook.com/v7.0/${instagram_id}/media?fields=media_url,thumbnail_url,caption,media_type,like_count,shortcode,timestamp,comments_count,username,children{media_url},permalink${commentsParam}&limit=${paginate}&access_token=${access_token}`
-    )
-    .then(async (response) => {
-      const results = []
-      results.push(...response.data.data)
+  // return axios
+  //   .get(
+  //     `https://graph.facebook.com/v7.0/${instagram_id}/media?fields=media_url,thumbnail_url,caption,media_type,like_count,shortcode,timestamp,comments_count,username,children{media_url},permalink${commentsParam}&limit=${paginate}&access_token=${access_token}`
+  //   )
+  //   .then(async (response) => {
+  //     const results = []
+  //     results.push(...response.data.data)
 
-      /**
-       * If maxPosts option specified, then check if there is a next field in the response data and the results' length <= maxPosts
-       * otherwise, fetch as more as it can.
-       */
-      while (
-        maxPosts
-          ? response.data.paging.next && results.length <= maxPosts
-          : response.data.paging.next
-      ) {
-        response = await axios(response.data.paging.next)
-        results.push(...response.data.data)
-      }
+  //     /**
+  //      * If maxPosts option specified, then check if there is a next field in the response data and the results' length <= maxPosts
+  //      * otherwise, fetch as more as it can.
+  //      */
+  //     while (
+  //       maxPosts
+  //         ? response.data.paging.next && results.length <= maxPosts
+  //         : response.data.paging.next
+  //     ) {
+  //       response = await axios(response.data.paging.next)
+  //       results.push(...response.data.data)
+  //     }
 
-      // if hashtags are true extract hashtags from captions and comments
-      const posts = hashtagsEnabled && results ? getHashtags(results) : results
+  //     // if hashtags are true extract hashtags from captions and comments
+  //     const posts = hashtagsEnabled && results ? getHashtags(results) : results
 
-      return maxPosts ? posts.slice(0, maxPosts) : posts
-    })
-    .catch(async (err) => {
-      console.warn(
-        `\nCould not get instagram posts using the Graph API. Error status ${err}`
-      )
-      console.warn(`Falling back to public scraping... with ${username}`)
+  //     return maxPosts ? posts.slice(0, maxPosts) : posts
+  //   })
+  //   .catch(async (err) => {
+  //     console.warn(
+  //       `\nCould not get instagram posts using the Graph API. Error status ${err}`
+  //     )
+  //     console.warn(`Falling back to public scraping... with ${username}`)
 
-      if (username) {
-        const photos = await scrapingInstagramPosts({
-          username,
-        })
-        return photos
-      }
+  //     if (username) {
+  //       const photos = await scrapingInstagramPosts({
+  //         username,
+  //       })
+  //       return photos
+  //     }
 
-      return null
-    })
+  //     return null
+  //   })
 }
