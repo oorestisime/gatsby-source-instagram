@@ -23,11 +23,21 @@ const createFileNode = async ({
   if (cacheMediaData) {
     fileNodeID = cacheMediaData.fileNodeID
     touchNode({ nodeId: fileNodeID })
+
+    await touchNode({
+      nodeId: fileNodeID,
+      // internal.type needs to be defined, currently using null but should be defined - ip 3/22/22
+      internal: {
+        type: null,
+      },
+    })
+
     return fileNodeID
   }
 
   try {
     const fileNode = await createRemoteFileNode({
+      reporter: null,
       url: preview,
       store,
       cache,

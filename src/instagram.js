@@ -7,16 +7,23 @@ export async function scrapingInstagramPosts({ username }) {
       `https://instagram.com/graphql/query/?query_id=17888483320059182&variables={"id":"${username}","first":100,"after":null}`
     )
     .then((response) => {
-      if(typeof response.data == "string" && response.data.includes("Login • Instagram")){
-        console.error(`gatsby-source-instagram: Instagram API returned login page due to rate limiting. If you wish to avoid this error please use Graph API. Read docs for more info:\nhttps://github.com/oorestisime/gatsby-source-instagram#common-build-errors`);
-        return null;
+      if (
+        typeof response.data == "string" &&
+        response.data.includes("Login • Instagram")
+      ) {
+        console.error(
+          `gatsby-source-instagram: Instagram API returned login page due to rate limiting. If you wish to avoid this error please use Graph API. Read docs for more info:\nhttps://github.com/oorestisime/gatsby-source-instagram#common-build-errors`
+        )
+        return null
       } else {
         const photos = []
-        response.data.data.user.edge_owner_to_timeline_media.edges.forEach(edge => {
-          if (edge.node) {
-            photos.push(edge.node)
+        response.data.data.user.edge_owner_to_timeline_media.edges.forEach(
+          (edge) => {
+            if (edge.node) {
+              photos.push(edge.node)
+            }
           }
-        });
+        )
         return photos
       }
     })
@@ -110,12 +117,32 @@ export async function apiInstagramPosts({
   paginate = `100`,
   maxPosts,
   hashtags = null,
+  customer_username = null,
+  facebook_api_version = `v13.0`,
 }) {
   const hashtagsEnabled = hashtags === true || hashtags?.enabled
   const hashtagsCommentDepth = hashtags?.commentDepth ?? 3
   const commentsParam = hashtagsEnabled
     ? `,comments.limit(${hashtagsCommentDepth}){text}`
     : ``
+
+  /** Patch feature: Get instagram account posts from other business accounts
+   *
+   * Currently the existing npm package takes your access token and instagram id as parameters and obtains posts from YOUR own account.  This patch will allow developers to use their own access token and instagram id to get posts from other accounts by using the buisness discovery api.  All you have to supply is the customer_username's parameter which is the clients instagram username - this must be a instagram business account.
+   *
+   * We probably want some error handling and also continue the flow if we want to use the other api endpoint.
+   *
+   * @param {string} customer_username
+   * @param {string} facebook_api_version
+   */
+
+  return axios
+    .get(
+      `https://graph.facebook.com/${facebook_api_version}/${instagram_id}?fields=business_discovery.username(${customer_username}){username,website,name,ig_id,id,profile_picture_url,biography,follows_count,followers_count,media_count,media{id,caption,like_count,comments_count,timestamp,username,media_product_type,media_type,owner,permalink,media_url,children{media_url}}}&access_token=${access_token}`
+    )
+    .then((response) => {
+      return response.data.business_discovery.media.data
+    })
 
   return axios
     .get(
@@ -124,7 +151,7 @@ export async function apiInstagramPosts({
     .then(async (response) => {
       const results = []
       results.push(...response.data.data)
-      
+
       /**
        * If maxPosts option specified, then check if there is a next field in the response data and the results' length <= maxPosts
        * otherwise, fetch as more as it can.

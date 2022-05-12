@@ -52,7 +52,8 @@ function createPostNode(datum, params) {
       params.type === `hashtag`
         ? params.hashtag
         : datum.username || datum.owner.username || datum.owner.id,
-    id: datum.shortcode,
+    // id: datum.shortcode, // no shortcode for business feature - ip
+    id: datum.id,
     parent: `__SOURCE__`,
     internal: {
       type: `InstaNode`,
@@ -106,7 +107,7 @@ function processDatum(datum, params) {
     params.type === `user-profile`
       ? createUserNode(datum, params)
       : createPostNode(datum, params)
-      
+
   // Get content digest of node. (Required field)
   const contentDigest = crypto
     .createHash(`md5`)
@@ -133,7 +134,7 @@ exports.sourceNodes = async (
   } else {
     console.warn(`Unknown type for gatsby-source-instagram: ${params.type}`)
   }
-  
+
   // Process data into nodes.
   if (data) {
     return Promise.all(
