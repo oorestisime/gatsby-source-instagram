@@ -23,7 +23,6 @@ export const pageQuery = graphql`
           likes
           caption
           comments
-          hashtags
           localFile {
             childImageSharp {
               fluid(quality: 70, maxWidth: 600, maxHeight: 600) {
