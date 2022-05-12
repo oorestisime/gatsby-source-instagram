@@ -74,7 +74,7 @@ function createPostNode(datum, params) {
     dimensions: datum.dimensions,
     comments:
       _.get(datum, `edge_media_to_comment.count`) || datum.comments_count,
-    hashtags: datum.hashtags,
+    // hashtags: datum.hashtags,
     permalink: datum.permalink,
     carouselImages: _.get(datum, `children.data`, []).map((imgObj) => {
       return {

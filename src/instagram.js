@@ -116,7 +116,7 @@ export async function apiInstagramPosts({
   username,
   paginate = `100`,
   maxPosts,
-  hashtags = null,
+  hashtags = [],
   customer_username = null,
   facebook_api_version = `v13.0`,
 }) {
