@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 const axios = require(`axios`)
 
-async function scrapingInstagramPosts({
+export async function scrapingInstagramPosts({
   username
 }) {
   return axios.get(`https://instagram.com/graphql/query/?query_id=17888483320059182&variables={"id":"${username}","first":100,"after":null}`).then(response => {
@@ -18,15 +18,55 @@ async function scrapingInstagramPosts({
   });
 }
 
-async function apiInstagramPosts({
+function getHashtags(data) {
+  return data.map((datum) => {
+    // matches non url hashtags
+    const hashtagMatch = /(^|\s)(#[a-z\d-_]+)/gi
+    const caption = datum?.caption ?? ``
+
+    // combine all comments into one string
+    const comments =
+      datum.comments?.data?.length > 0 ?? false
+        ? datum.comments.data
+            .map((comment) => (comment && comment.text ? comment.text : ``))
+            .filter((comment) => comment && comment.length > 0)
+            .join(` `)
+        : ``
+
+    // combine caption and comment strings, then run match
+    const captionHashtags = (caption + ` ` + comments).match(hashtagMatch)
+
+    const hashtags =
+      captionHashtags?.length > 0 ?? false
+        ? // remove whitespace from beginning of each hashtag
+          captionHashtags.map((item) => item.trim())
+        : []
+
+    return {
+      ...datum,
+      // remove duplicate hashtags
+      hashtags: [...new Set(hashtags)],
+    }
+  })
+}
+
+export async function apiInstagramPosts({
   access_token,
   instagram_id,
   username,
   paginate = `100`,
   maxPosts,
+  hashtags = null,
 }) {
+  const hashtagsEnabled = hashtags === true || hashtags?.enabled
+  const hashtagsCommentDepth = hashtags?.commentDepth ?? 3
+  const commentsParam = hashtagsEnabled
+    ? `,comments.limit(${hashtagsCommentDepth}){text}`
+    : ``
 
-  return axios.get(`https://graph.facebook.com/v7.0/${instagram_id}/media?fields=media_url,thumbnail_url,caption,media_type,like_count,shortcode,timestamp,comments_count,username,children{media_url},permalink&limit=${paginate}&access_token=${access_token}`).then(async response => {
+  return axios.get(
+    `https://graph.facebook.com/v7.0/${instagram_id}/media?fields=media_url,thumbnail_url,caption,media_type,like_count,shortcode,timestamp,comments_count,username,children{media_url},permalink${commentsParam}&limit=${paginate}&access_token=${access_token}`
+  ).then(async response => {
     const results = [];
     results.push(...response.data.data);
     /**
@@ -39,7 +79,8 @@ async function apiInstagramPosts({
       results.push(...response.data.data);
     } 
 
-    const posts =  results;
+    const posts = hashtagsEnabled && results ? getHashtags(results) : results
+
     return maxPosts ? posts.slice(0, maxPosts) : posts;
   }).catch(async err => {
     console.warn(`\nCould not get instagram posts using the Graph API. Error status ${err}`);

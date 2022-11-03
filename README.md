@@ -10,11 +10,9 @@
 
 </div>
 
-Source plugin for sourcing data from Instagram. There are four ways to get information from instagram:
+Source plugin for sourcing data from Instagram. There are two ways to get information from instagram:
 
 - scraping the posts of an Instagram account. It can only get last 50 photos.
-- scraping a hashtag page.
-- scraping a user profile's informations.
 - querying the Instagram Graph Api using a provided `access_token`
 
 # Table of Contents
@@ -22,9 +20,7 @@ Source plugin for sourcing data from Instagram. There are four ways to get infor
 - [Install](#install)
 - [How to use](#how-to-use)
   - [Public scraping for posts](#public-scraping-for-posts)
-  - [Public scraping for a user's profile](#public-scraping-for-a-users-profile)
   - [Graph API](#graph-api)
-  - [Hashtag scraping](#hashtag-scraping)
 - [How to query](#how-to-query)
   - [Posts](#posts)
   - [User profile information](#user-profile-information)
@@ -56,29 +52,6 @@ plugins: [
   },
 ]
 ```
-
-### Public scraping for a user's profile
-
-** Deprecated **
-
-Due to instagram adding a login screen for scraping calls this is no longer working on Cloud builders.
-I am currently researching a solution, ideas and PRs welcome.
-
-If you want to source a user's profile from their username then you need the following:
-
-```javascript
-// In your gatsby-config.js
-plugins: [
-  {
-    resolve: `gatsby-source-instagram`,
-    options: {
-      type: `user-profile`,
-      username: `username`,
-    },
-  },
-]
-```
-
 ### Graph API
 
 If you intend to use the Instagram Graph Api then you need to pass the instagram id and an access token
@@ -123,28 +96,6 @@ plugins: [
   },
 ]
 
-```
-
-### Hashtag scraping
-
-** Deprecated **
-
-Due to instagram adding a login screen for scraping calls this is no longer working on Cloud builders.
-I am currently researching a solution, ideas and PRs welcome.
-
-If you want to source nodes from hashtags then you need the following:
-
-```javascript
-// In your gatsby-config.js
-plugins: [
-  {
-    resolve: `gatsby-source-instagram`,
-    options: {
-      type: `hashtag`,
-      hashtag: `snowing`,
-    },
-  },
-]
 ```
 
 ## How to query
@@ -215,39 +166,6 @@ query {
         }
       }
     }
-  }
-}
-```
-
-### User profile information
-
-** Deprecated **
-
-Due to instagram adding a login screen for scraping calls this is no longer working on Cloud builders.
-I am currently researching a solution, ideas and PRs welcome.
-
-Fields include:
-
-- id
-- username
-- full_name
-- biography
-- edge_followed_by (followers)
-- edge_follow (who the user follows)
-- profile_pic_url
-- profile_pic_url_hd
-
-```graphql
-query {
-  instaUserNode {
-    id
-    username
-    full_name
-    biography
-    edge_followed_by
-    edge_follow
-    profile_pic_url
-    profile_pic_url_hd
   }
 }
 ```
