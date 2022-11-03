@@ -1,6 +1,4 @@
-"use strict"
-
-const { createRemoteFileNode } = require(`gatsby-source-filesystem`)
+import { createRemoteFileNode } from "gatsby-source-filesystem"
 
 /**
  * Create file nodes to be used by gatsby image.
@@ -49,7 +47,7 @@ const createFileNode = async ({
  * @param {object} agrugments - The good stuff.
  * @returns {object} datum - Media data.
  */
-exports.downloadMediaFile = async ({
+export const downloadMediaFile = async ({
   datum,
   store,
   cache,
