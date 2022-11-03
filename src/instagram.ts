@@ -1,17 +1,17 @@
 /* eslint-disable camelcase */
 import axios from "axios"
+import type { Options, RawInstagramNode } from "../types/options"
 
-export async function scrapingInstagramPosts({ username }) {
+export async function scrapingInstagramPosts(username: Options["username"]) {
   return axios
     .get(
       `https://instagram.com/graphql/query/?query_id=17888483320059182&variables={"id":"${username}","first":100,"after":null}`
     )
     .then((response) => {
-      const photos = []
-      response.data.data.user.edge_owner_to_timeline_media.edges.forEach(
-        (edge) => {
+      const photos: RawInstagramNode[] = response.data.data.user.edge_owner_to_timeline_media.edges.forEach(
+        (edge: { node: RawInstagramNode }) => {
           if (edge.node) {
-            photos.push(edge.node)
+            return edge.node
           }
         }
       )
@@ -23,7 +23,7 @@ export async function scrapingInstagramPosts({ username }) {
     })
 }
 
-function getHashtags(data) {
+function getHashtags(data: RawInstagramNode[]) {
   return data.map((datum) => {
     // matches non url hashtags
     const hashtagMatch = /(^|\s)(#[a-z\d-_]+)/gi
@@ -32,14 +32,14 @@ function getHashtags(data) {
     // combine all comments into one string
     const comments =
       datum.comments?.data?.length > 0 ?? false
-        ? datum.comments.data
+        ? datum.comments?.data
             .map((comment) => (comment && comment.text ? comment.text : ``))
             .filter((comment) => comment && comment.length > 0)
             .join(` `)
         : ``
 
     // combine caption and comment strings, then run match
-    const captionHashtags = (caption + ` ` + comments).match(hashtagMatch)
+    const captionHashtags = (caption + ` ` + comments).match(hashtagMatch) || []
 
     const hashtags =
       captionHashtags?.length > 0 ?? false
@@ -61,9 +61,10 @@ export async function apiInstagramPosts({
   username,
   paginate = `100`,
   maxPosts,
-  hashtags = null,
-}) {
-  const hashtagsEnabled = hashtags === true || hashtags?.enabled
+  hashtags,
+}: Options) {
+  const hashtagsEnabled = hashtags || hashtags?.enabled
+
   const hashtagsCommentDepth = hashtags?.commentDepth ?? 3
   const commentsParam = hashtagsEnabled
     ? `,comments.limit(${hashtagsCommentDepth}){text}`
@@ -101,9 +102,7 @@ export async function apiInstagramPosts({
       console.warn(`Falling back to public scraping... with ${username}`)
 
       if (username) {
-        const photos = await scrapingInstagramPosts({
-          username,
-        })
+        const photos = await scrapingInstagramPosts(username)
         return photos
       }
 

@@ -1,34 +1,42 @@
 import _ from "lodash"
-
 import { downloadMediaFile } from "./normalize"
 import { apiInstagramPosts, scrapingInstagramPosts } from "./instagram"
 
-import type { GatsbyNode } from "gatsby"
+import type { GatsbyNode, NodePluginArgs } from "gatsby"
+import type {
+  GatsbyInstagramNode,
+  Options,
+  RawInstagramNode,
+} from "../types/options"
 
 const defaultOptions = {
-  type: `account`,
-  paginate: 100,
+  type: "account",
+  paginate: "100",
 }
 
-async function getInstagramPosts(options) {
+async function getInstagramPosts(options: Options) {
   let data
 
   if (options.access_token && options.instagram_id) {
     data = await apiInstagramPosts(options)
   } else {
-    data = await scrapingInstagramPosts(options)
+    data = await scrapingInstagramPosts(options.username)
   }
 
   return data
 }
 
-function createPostNode(datum, params) {
+function createPostNode(
+  datum: RawInstagramNode,
+  createContentDigest: NodePluginArgs["createContentDigest"]
+): GatsbyInstagramNode {
   return {
     username: datum.username || datum.owner.username || datum.owner.id,
     id: datum.shortcode,
     parent: `__SOURCE__`,
     internal: {
       type: `InstaNode`,
+      contentDigest: createContentDigest(datum),
     },
     children: [],
     likes:
@@ -48,28 +56,30 @@ function createPostNode(datum, params) {
       _.get(datum, `edge_media_to_comment.count`) || datum.comments_count,
     hashtags: datum.hashtags,
     permalink: datum.permalink,
-    carouselImages: _.get(datum, `children.data`, []).map((imgObj) => {
-      return {
-        preview: imgObj.media_url,
-        ...imgObj,
+    // Known problem with this field.  It's an array of raw nodes here, but later mutated to Gatsby nodes with createRemoteFileNode
+    //@ts-ignore
+    carouselImages: _.get(datum, `children.data`, []).map(
+      (imgObj: RawInstagramNode) => {
+        return {
+          ...imgObj,
+          preview: imgObj.media_url,
+        }
       }
-    }),
+    ),
   }
 }
 
-function processDatum(datum, params) {
-  const node = createPostNode(datum, params) // Get content digest of node. (Required field)
+function processDatum(
+  datum: RawInstagramNode,
+  createContentDigest: NodePluginArgs["createContentDigest"]
+) {
+  const node = createPostNode(datum, createContentDigest) // Get content digest of node. (Required field)
 
-  const contentDigest = crypto
-    .createHash(`md5`)
-    .update(JSON.stringify(node))
-    .digest(`hex`)
-  node.internal.contentDigest = contentDigest
   return node
 }
 
 export const sourceNodes: GatsbyNode["sourceNodes"] = async (
-  { actions, store, cache, createNodeId },
+  { actions, cache, createNodeId, createContentDigest },
   options
 ) => {
   const { createNode, touchNode } = actions
@@ -80,16 +90,15 @@ export const sourceNodes: GatsbyNode["sourceNodes"] = async (
 
   if (data) {
     Promise.all(
-      data.map(async (datum) => {
+      data.map(async (datum: RawInstagramNode) => {
         const res = await downloadMediaFile({
-          datum: processDatum(datum, params),
-          store,
+          datum: processDatum(datum, createContentDigest),
           cache,
           createNode,
           createNodeId,
           touchNode,
         })
-        createNode(res)
+        createNode({ ...res })
       })
     )
   }
