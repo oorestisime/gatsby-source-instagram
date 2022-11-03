@@ -1,54 +1,34 @@
 {
-  "parser": "babel-eslint",
-  "extends": [
-    "google",
-    "eslint:recommended",
-    "plugin:react/recommended",
-    "prettier",
-    "prettier/react"
-  ],
-  "plugins": ["prettier", "react"],
-  "parserOptions": {
-    "ecmaVersion": 2016,
-    "sourceType": "module",
-    "ecmaFeatures": {
-      "jsx": true
-    }
-  },
   "env": {
     "browser": true,
-    "es6": true,
-    "node": true,
+    "es2021": true,
     "jest": true
   },
-  "globals": {
-    "before": true,
-    "spyOn": true,
-    "__PATH_PREFIX__": true
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": "latest",
+    "sourceType": "module"
   },
+  "plugins": ["react", "@typescript-eslint", "react-hooks", "prettier"],
   "rules": {
-    "arrow-body-style": [
-      "error",
-      "as-needed",
-      {
-        "requireReturnForObjectLiteral": true
-      }
-    ],
-    "consistent-return": "off",
-    "no-console": "off",
-    "no-inner-declarations": "off",
-    "prettier/prettier": "error",
-    "quotes": ["error", "backtick"],
-    "react/display-name": "off",
-    "react/jsx-key": "warn",
-    "react/no-unescaped-entities": "warn",
-    "react/prop-types": "off",
-    "require-jsdoc": "off",
-    "valid-jsdoc": "off"
+    "react/react-in-jsx-scope": "off",
+    "camelcase": "error",
+    "spaced-comment": "error",
+    "quotes": ["error", "single"],
+    "no-duplicate-imports": "error"
   },
   "settings": {
-    "react": {
-      "version": "16.4.2"
+    "import/resolver": {
+      "typescript": {}
     }
   }
 }
