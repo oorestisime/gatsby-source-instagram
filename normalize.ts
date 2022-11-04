@@ -1,6 +1,6 @@
 import { createRemoteFileNode } from "gatsby-source-filesystem"
 import type { Actions, NodePluginArgs } from "gatsby"
-import { GatsbyInstagramNode, RawInstagramNode } from "../types/options"
+import { GatsbyInstagramNode, RawInstagramNode } from "./types/options"
 
 /**
  * Create file nodes to be used by gatsby image.

@@ -7,7 +7,7 @@ import type {
   GatsbyInstagramNode,
   Options,
   RawInstagramNode,
-} from "../types/options"
+} from "./types/options"
 
 const defaultOptions = {
   type: "account",

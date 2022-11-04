@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 import axios from "axios"
-import type { Options, RawInstagramNode } from "../types/options"
+import type { Options, RawInstagramNode } from "./types/options"
 
 export async function scrapingInstagramPosts(username: Options["username"]) {
   return axios
@@ -8,7 +8,7 @@ export async function scrapingInstagramPosts(username: Options["username"]) {
       `https://instagram.com/graphql/query/?query_id=17888483320059182&variables={"id":"${username}","first":100,"after":null}`
     )
     .then((response) => {
-      const photos: RawInstagramNode[] = response.data.data.user.edge_owner_to_timeline_media.edges.forEach(
+      const photos: RawInstagramNode[] = response.data.data.user.edge_owner_to_timeline_media.edges.map(
         (edge: { node: RawInstagramNode }) => {
           if (edge.node) {
             return edge.node
