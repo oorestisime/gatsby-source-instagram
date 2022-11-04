@@ -75,22 +75,32 @@ export async function apiInstagramPosts({
       `https://graph.instagram.com/me?fields=media{media_url,thumbnail_url,caption,media_type,like_count,shortcode,timestamp,comments_count,username,children{media_url},permalink${commentsParam}}&limit=${paginate}&access_token=${access_token}`
     )
     .then(async (response) => {
-      console.log("RES", response.data)
-
       const results = []
       results.push(...response.data.media.data)
       /**
        * If maxPosts option specified, then check if there is a next field in the response data and the results' length <= maxPosts
        * otherwise, fetch as more as it can.
        */
+      console.log("MAX", maxPosts)
 
-      while (
-        maxPosts
-          ? response.data.media.paging.next && results.length <= maxPosts
-          : response.data.media.paging.next
-      ) {
+      const next =
+        response.data?.media?.paging?.next || response?.data?.paging?.next
+
+      function sleep(ms: number) {
+        return new Promise((resolve) => {
+          setTimeout(resolve, ms)
+        })
+      }
+      while (maxPosts ? next && results.length <= maxPosts : next) {
+        console.log(
+          "PAGING",
+          response.data?.media?.paging?.next ||
+            response.data?.data?.paging?.next
+        )
+        await sleep(1000)
         response = await axios(response.data.media.paging.next)
-        results.push(...response.data.media.data)
+
+        results.push(...response.data.data)
       }
 
       const posts = hashtagsEnabled && results ? getHashtags(results) : results
@@ -98,6 +108,7 @@ export async function apiInstagramPosts({
       return maxPosts ? posts.slice(0, maxPosts) : posts
     })
     .catch(async (err) => {
+      console.trace()
       console.warn(
         `\nCould not get instagram posts using the Graph API. Error status ${err}`
       )
