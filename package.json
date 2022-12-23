@@ -13,17 +13,24 @@
   "devDependencies": {
     "@babel/cli": "7.11.6",
     "@babel/core": "7.11.6",
+    "@types/lodash": "^4.14.187",
+    "@types/node": "^18.11.9",
+    "@typescript-eslint/eslint-plugin": "^5.42.0",
+    "@typescript-eslint/parser": "^5.42.0",
     "babel-eslint": "10.1.0",
     "babel-preset-gatsby-package": "0.5.3",
     "cross-env": "7.0.2",
     "eslint": "7.9.0",
-    "eslint-config-google": "0.14.0",
     "eslint-config-prettier": "6.11.0",
     "eslint-plugin-import": "2.22.0",
     "eslint-plugin-jsx-a11y": "6.3.1",
     "eslint-plugin-prettier": "3.1.4",
     "eslint-plugin-react": "7.20.6",
-    "prettier": "2.1.2"
+    "gatsby": "^4.24.7",
+    "gatsby-source-filesystem": "^4.24.0",
+    "lodash": "^4.17.21",
+    "prettier": "2.1.2",
+    "typescript": "^4.8.4"
   },
   "homepage": "https://github.com/oorestisime/gatsby-source-instagram",
   "keywords": [
@@ -32,12 +39,12 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "gatsby-source-filesystem": "^2.0.27",
-    "gatsby": ">2.0.0-alpha"
+    "gatsby": "^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0",
+    "gatsby-source-filesystem": "^2.0.27 || ^3.0.0 || ^4.0.0 || ^5.0.0"
   },
   "repository": "https://github.com/oorestisime/gatsby-source-instagram",
   "scripts": {
-    "build": "babel src --out-dir . --ignore **/__tests__",
+    "build": "tsc --build tsconfig.json",
     "prepare": "cross-env NODE_ENV=production npm run build",
     "watch": "babel -w src --out-dir . --ignore **/__tests__"
   }

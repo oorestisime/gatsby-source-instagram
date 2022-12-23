@@ -1,6 +1,6 @@
-"use strict"
-
-const { createRemoteFileNode } = require(`gatsby-source-filesystem`)
+import { createRemoteFileNode } from "gatsby-source-filesystem"
+import type { Actions, NodePluginArgs } from "gatsby"
+import { GatsbyInstagramNode, RawInstagramNode } from "./types/options"
 
 /**
  * Create file nodes to be used by gatsby image.
@@ -10,11 +10,17 @@ const { createRemoteFileNode } = require(`gatsby-source-filesystem`)
 const createFileNode = async ({
   id,
   preview,
-  store,
   cache,
   createNode,
   createNodeId,
   touchNode,
+}: {
+  id: string
+  preview: RawInstagramNode["preview"]
+  cache: NodePluginArgs["cache"]
+  createNode: Actions["createNode"]
+  createNodeId: NodePluginArgs["createNodeId"]
+  touchNode: Actions["touchNode"]
 }) => {
   const mediaDataCacheKey = `instagram-media-${id}`
   const cacheMediaData = await cache.get(mediaDataCacheKey)
@@ -22,14 +28,13 @@ const createFileNode = async ({
 
   if (cacheMediaData) {
     fileNodeID = cacheMediaData.fileNodeID
-    touchNode({ nodeId: fileNodeID })
+    touchNode(cacheMediaData)
     return fileNodeID
   }
 
   try {
     const fileNode = await createRemoteFileNode({
       url: preview,
-      store,
       cache,
       createNode,
       createNodeId,
@@ -49,21 +54,25 @@ const createFileNode = async ({
  * @param {object} agrugments - The good stuff.
  * @returns {object} datum - Media data.
  */
-exports.downloadMediaFile = async ({
+export const downloadMediaFile = async ({
   datum,
-  store,
   cache,
   createNode,
   createNodeId,
   touchNode,
-}) => {
+}: {
+  datum: GatsbyInstagramNode
+  cache: NodePluginArgs["cache"]
+  createNode: Actions["createNode"]
+  createNodeId: NodePluginArgs["createNodeId"]
+  touchNode: Actions["touchNode"]
+}): Promise<GatsbyInstagramNode> => {
   const { carouselImages, id, preview } = datum
 
   /** Create a file node for base image */
   const fileNodeID = await createFileNode({
     id,
     preview,
-    store,
     cache,
     createNode,
     createNodeId,
@@ -82,7 +91,6 @@ exports.downloadMediaFile = async ({
     const carouselFileNodeID = await createFileNode({
       id: imgId,
       preview: imgPreview,
-      store,
       cache,
       createNode,
       createNodeId,
@@ -90,8 +98,9 @@ exports.downloadMediaFile = async ({
     })
 
     /** eslint-disable-next-line require-atomic-updates */
-    if (carouselFileNodeID)
+    if (carouselFileNodeID) {
       datum.carouselImages[i].localFile___NODE = carouselFileNodeID
+    }
   }
 
   return datum
