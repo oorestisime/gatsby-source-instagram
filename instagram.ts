@@ -75,7 +75,7 @@ export async function apiInstagramPosts({
       `https://graph.facebook.com/v7.0/${instagram_id}/media?fields=media_url,thumbnail_url,caption,media_type,like_count,shortcode,timestamp,comments_count,username,children{media_url},permalink${commentsParam}&limit=${paginate}&access_token=${access_token}`
     )
     .then(async (response) => {
-      const results = []
+      const results: RawInstagramNode[] = []
       results.push(...response.data.data)
       /**
        * If maxPosts option specified, then check if there is a next field in the response data and the results' length <= maxPosts

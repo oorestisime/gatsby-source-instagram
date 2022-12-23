@@ -123,28 +123,6 @@ plugins: [
 ]
 ```
 
-### Hashtag scraping
-
-** Deprecated **
-
-Due to instagram adding a login screen for scraping calls this is no longer working on Cloud builders.
-I am currently researching a solution, ideas and PRs welcome.
-
-If you want to source nodes from hashtags then you need the following:
-
-```javascript
-// In your gatsby-config.js
-plugins: [
-  {
-    resolve: `gatsby-source-instagram`,
-    options: {
-      type: `hashtag`,
-      hashtag: `snowing`,
-    },
-  },
-]
-```
-
 ## How to query
 
 ### Posts
