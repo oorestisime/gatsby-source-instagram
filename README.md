@@ -21,6 +21,8 @@ Source plugin for sourcing data from Instagram. There are two ways to get inform
 - [How to use](#how-to-use)
   - [Public scraping for posts](#public-scraping-for-posts)
   - [Graph API](#graph-api)
+  - [Public scraping for a user's profile DEPRECATED](#public-scraping-for-a-users-profile)
+  - [Hashtag scraping DEPRECATED](#hashtag-scraping)
 - [How to query](#how-to-query)
   - [Posts](#posts)
   - [User profile information](#user-profile-information)
@@ -37,6 +39,7 @@ Source plugin for sourcing data from Instagram. There are two ways to get inform
 
 If you intend to use the public scraping method then you need to pass the concerning username id.
 You can determine it by taking the following steps:
+
 1. Open a browser and go to the Instagram page of the user – e.g. https://www.instagram.com/oasome.blog/
 1. Right-click on the web page to open the right-click context menu and select Page Source / View page source / Show Page Source. Safari users, please make sure that the developer tools are enabled – see [Enabling Web Inspector - Apple Developer](https://developer.apple.com/library/archive/documentation/NetworkingInternetWeb/Conceptual/Web_Inspector_Tutorial/EnableWebInspector/EnableWebInspector.html)
 1. Search for `profilePage_`. The number that follows is the username id. If you view the page source of https://www.instagram.com/oasome.blog/, you will find `profilePage_8556131572`. So, `8556131572` is the username id of the username `oasome.blog`.
@@ -52,6 +55,7 @@ plugins: [
   },
 ]
 ```
+
 ### Graph API
 
 If you intend to use the Instagram Graph Api then you need to pass the instagram id and an access token
@@ -67,7 +71,7 @@ plugins: [
       instagram_id: "your instagram_business_account id",
       paginate: 100,
       maxPosts: 1000,
-      hashtags: true
+      hashtags: true,
     },
   },
 ]
@@ -90,12 +94,33 @@ plugins: [
       instagram_id: "your instagram_business_account id",
       hashtags: {
         enabled: true,
-        commentDepth: 10
-      }
+        commentDepth: 10,
+      },
     },
   },
 ]
+```
 
+### Public scraping for a user's profile
+
+** Deprecated **
+
+Due to instagram adding a login screen for scraping calls this is no longer working on Cloud builders.
+I am currently researching a solution, ideas and PRs welcome.
+
+If you want to source a user's profile from their username then you need the following:
+
+```javascript
+// In your gatsby-config.js
+plugins: [
+  {
+    resolve: `gatsby-source-instagram`,
+    options: {
+      type: `user-profile`,
+      username: `username`,
+    },
+  },
+]
 ```
 
 ## How to query
