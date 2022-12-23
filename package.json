@@ -11,10 +11,14 @@
     "axios": "^0.20.0"
   },
   "devDependencies": {
+    "@babel/cli": "7.11.6",
+    "@babel/core": "7.11.6",
     "@types/lodash": "^4.14.187",
     "@types/node": "^18.11.9",
     "@typescript-eslint/eslint-plugin": "^5.42.0",
     "@typescript-eslint/parser": "^5.42.0",
+    "babel-eslint": "10.1.0",
+    "babel-preset-gatsby-package": "0.5.3",
     "cross-env": "7.0.2",
     "eslint": "7.9.0",
     "eslint-config-prettier": "6.11.0",
@@ -35,13 +39,13 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "gatsby": ">2.0.0-alpha",
-    "gatsby-source-filesystem": "^2.0.27"
+    "gatsby": "^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0",
+    "gatsby-source-filesystem": "^2.0.27 || ^3.0.0 || ^4.0.0 || ^5.0.0"
   },
   "repository": "https://github.com/oorestisime/gatsby-source-instagram",
   "scripts": {
     "build": "tsc --build tsconfig.json",
-    "prepare": "cross-env NODE_ENV=production yarn build",
-    "watch": "tsc --watch tsconfig.json"
+    "prepare": "cross-env NODE_ENV=production npm run build",
+    "watch": "babel -w src --out-dir . --ignore **/__tests__"
   }
 }
