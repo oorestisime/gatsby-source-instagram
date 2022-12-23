@@ -81,24 +81,13 @@ export async function apiInstagramPosts({
        * If maxPosts option specified, then check if there is a next field in the response data and the results' length <= maxPosts
        * otherwise, fetch as more as it can.
        */
-      console.log("MAX", maxPosts)
 
-      const next =
-        response.data?.media?.paging?.next || response?.data?.paging?.next
+      let next =
+        response.data?.media?.paging?.next || response.data?.data?.paging?.next
 
-      function sleep(ms: number) {
-        return new Promise((resolve) => {
-          setTimeout(resolve, ms)
-        })
-      }
       while (maxPosts ? next && results.length <= maxPosts : next) {
-        console.log(
-          "PAGING",
-          response.data?.media?.paging?.next ||
-            response.data?.data?.paging?.next
-        )
-        await sleep(1000)
-        response = await axios(response.data.media.paging.next)
+        response = await axios(next)
+        next = response.data?.paging?.next
 
         results.push(...response.data.data)
       }

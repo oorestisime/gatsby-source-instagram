@@ -30,6 +30,8 @@ function createPostNode(
   datum: RawInstagramNode,
   createContentDigest: NodePluginArgs["createContentDigest"]
 ): GatsbyInstagramNode {
+  console.log("DATUM", datum)
+
   return {
     username: datum.username || datum.owner.username || datum.owner.id,
     id: datum.shortcode,
@@ -98,7 +100,9 @@ export const sourceNodes: GatsbyNode["sourceNodes"] = async (
           createNodeId,
           touchNode,
         })
-        createNode({ ...res })
+        console.log(res)
+
+        createNode({ ...res, id: createNodeId(`InstaNode-${res.permalink}`) })
       })
     )
   }
